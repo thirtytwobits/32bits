@@ -1,0 +1,64 @@
+/*
+ * Global stylesheet for 32bits.io.
+ *
+ * Tailwind v4 is configured here via the `@import "tailwindcss"` directive.
+ * Theme tokens (colors, fonts, spacing) live in the @theme block below and
+ * become CSS variables + utility classes automatically.
+ *
+ * See docs/DESIGN.md R8 (very simple chrome) and R11 (typography first-class).
+ */
+
+@import 'tailwindcss';
+
+@theme {
+  /* Type — placeholder system stacks until Phase 2 picks the real faces.
+     R11: two self-hosted faces, paired display + body. */
+  --font-display: ui-serif, Georgia, 'Iowan Old Style', 'Apple Garamond', serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Color — minimal neutral palette; light mode default.
+     Dark mode overrides come via [data-theme="dark"] (see below). */
+  --color-bg: #fafaf9;
+  --color-fg: #1a1a1a;
+  --color-fg-muted: #6b6b6b;
+  --color-rule: #e5e5e5;
+}
+
+/* Tri-state theme switch (R10: subtle, icon-only) overrides the system default. */
+[data-theme='dark'] {
+  --color-bg: #0e0e0e;
+  --color-fg: #f5f5f4;
+  --color-fg-muted: #9a9a9a;
+  --color-rule: #2a2a2a;
+}
+
+/* Respect OS preference when the user hasn't chosen explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --color-bg: #0e0e0e;
+    --color-fg: #f5f5f4;
+    --color-fg-muted: #9a9a9a;
+    --color-rule: #2a2a2a;
+  }
+}
+
+/* Reduced-motion floor (P5). Lenis smooth scroll and ScrollTrigger scenes
+   honor this at the JS layer too. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

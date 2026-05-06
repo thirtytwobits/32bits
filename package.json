@@ -1,0 +1,47 @@
+{
+  "name": "32bits-site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "32bits.io — media-first portfolio. See ROADMAP.md and docs/DESIGN.md.",
+  "homepage": "https://32bits.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thirtytwobits/32bits.git"
+  },
+  "engines": {
+    "node": ">=20.10.0",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "typescript": "^5.6.0",
+    "prettier": "^3.3.0",
+    "prettier-plugin-astro": "^0.14.0",
+    "prettier-plugin-tailwindcss": "^0.6.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}

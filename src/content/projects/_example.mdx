@@ -1,0 +1,25 @@
+---
+# This is an example project file demonstrating the frontmatter schema
+# (see src/content.config.ts). The leading underscore in the filename
+# excludes it from the build — Astro skips files starting with `_`.
+#
+# To author a real project: copy this file, drop the underscore, fill in
+# the fields, and `pnpm dev` will hot-reload it as a routed page.
+title: 'Example Project'
+order: 0
+hero:
+  type: image
+  src: /media/example/hero.jpg
+  alt: 'Placeholder hero image'
+summary: 'A short, optional one-liner shown on the Home overview.'
+layout: default
+draft: true
+hidden: false
+---
+
+# Example Project
+
+Body content lives below the frontmatter as Markdown / MDX.
+
+Drop in components when you need them — the `default` layout will accept
+plain prose without ceremony.
