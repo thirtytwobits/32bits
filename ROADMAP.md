@@ -176,8 +176,9 @@ plus a local `_squarespace-snapshot/` folder.
 **Goal:** the look-and-feel locked in on a small surface area before scale-up.
 
 Design system already resolved (see [docs/DESIGN.md](docs/DESIGN.md)) — the
-work in this phase is moving the design tokens and layout primitives from
-`/design/option-*` mockups into production components.
+work in this phase moves the design tokens and layout primitives that were
+prototyped under `/design/option-*` (since torn down) into production
+components.
 
 **Tokens & shared chrome:**
 
@@ -205,7 +206,7 @@ work in this phase is moving the design tokens and layout primitives from
       `<Scene>` components plus optional plain-`<img>` interludes.
 - [ ] Build `Scene.astro` accepting `pattern: "cover" | "reveal"` and an
       image source. Implements the sticky-image + (optional negative-margin)
-      slab pattern from `/design/option-2`.
+      slab pattern (see `src/components/slabs/Scene.astro`).
 - [ ] Build `TextSlab.astro` and `TitleSlab.astro` — the slab content
       primitives (display text, body, monospace label).
 

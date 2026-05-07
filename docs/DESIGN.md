@@ -343,9 +343,10 @@ Tracked here so they don't get lost. Answer in place and date the answer.
     bleed off the right edge, and text-only display sections at
     `clamp(3rem, 9vw, 7.5rem)` size. Each composition earns its own.
 
-  The reference mockups live at `/design/option-1`–`/design/option-3`
-  and remain in the repo until the production components land in
-  Phase 2.
+  Reference mockups under `/design/option-*` were used to converge on
+  these decisions and have been torn down (history is in git). The
+  canonical implementation lives in `src/components/slabs/` and
+  `src/components/smear/`.
 
 - **Brand mark asset** — the polygonal "rock" logo from the existing site
   needs to be exported as an SVG (or recreated cleanly as one) before R10's
@@ -384,6 +385,8 @@ Tracked here so they don't get lost. Answer in place and date the answer.
   single primitive with two scene patterns (`cover` + `reveal`) — the
   reveal pattern pins the image static at viewport top while a
   negative-margin slab departs upward off the screen. `smear` is the
-  asymmetric editorial layout. Both are pure CSS, no JS. Reference
-  mockups at `/design/option-1` (Slabs/Slabs-Reveal demo) and
-  `/design/option-3` (Smear) until Phase 2 components land.
+  asymmetric editorial layout. Both are pure CSS, no JS.
+- **2026-05-06** — Phase 2 production components landed
+  (`src/components/slabs/`, `src/components/smear/`, `BaseLayout`,
+  `ProjectLayout`, `BrandMark`, `Footer`, `PrevNext`, `ScrollToTop`).
+  `/design/option-*` mockups torn down — history in git.
