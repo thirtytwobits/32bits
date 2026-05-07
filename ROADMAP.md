@@ -103,7 +103,7 @@ hero:
   type: image | video
   src: /media/foo.jpg
   alt: 'Description'
-layout: default | scroll-scene
+template: slabs | smear # picks the page composition primitives
 draft: false # excluded from build when true
 ```
 
@@ -175,20 +175,53 @@ plus a local `_squarespace-snapshot/` folder.
 
 **Goal:** the look-and-feel locked in on a small surface area before scale-up.
 
-- [ ] Pick typography (one display face + one body face, both via local
-      `@font-face` to avoid Google Fonts dependency).
-- [ ] Set Tailwind theme: colors, spacing, font sizes, breakpoints.
-- [ ] Build `BaseLayout.astro` (global `<head>`, fonts, Lenis init, footer).
-- [ ] Build `DefaultLayout.astro` (standard scrolling page wrapper).
-- [ ] Build `MediaBlock.astro` (responsive image/video, captions, alt text).
-- [ ] Build `Footer.astro` — minimal: name, email, year. No nav menu.
-- [ ] Implement `prefers-reduced-motion` handling at the layout level (disable
-      Lenis smooth scroll when set).
-- [ ] Light/dark mode decision: pick one or implement both via
-      `prefers-color-scheme`.
+Design system already resolved (see [docs/DESIGN.md](docs/DESIGN.md)) — the
+work in this phase is moving the design tokens and layout primitives from
+`/design/option-*` mockups into production components.
 
-**Exit criteria:** a single placeholder page demonstrating typography, image,
-video, and responsive behavior at all three breakpoints.
+**Tokens & shared chrome:**
+
+- [x] Pick typography — Engineering pairing: Space Grotesk (display) + IBM
+      Plex Sans (body) + JetBrains Mono (metadata), all self-hosted via
+      `@fontsource` packages.
+- [x] Set palette tokens — Amber (Gruvbox-flavored) light + dark modes,
+      currently in `src/styles/design-system.css`. Light is its own design,
+      not a flipped dark.
+- [ ] Promote `src/styles/design-system.css` to the canonical source of
+      truth (already imported by mockups).
+- [ ] Build `BaseLayout.astro` — global `<head>`, fonts, theme switch
+      (tri-state light/system/dark, icon-only per R10), `prefers-reduced-motion`
+      handling.
+- [ ] Build `BrandMark.astro` — the rock as a 24px floating top-left zoom-out
+      with `mix-blend-mode: difference` for legibility over imagery.
+- [ ] Build `Footer.astro` — full-width band; tagline + social icons on Home,
+      no tagline on project pages.
+- [ ] Build `PrevNext.astro` — terminate-no-wrap navigation between projects
+      in `order` sequence.
+
+**Layout 1 — Slabs (with cover + reveal scene patterns):**
+
+- [ ] Build `SlabsLayout.astro` — page wrapper that hosts a sequence of
+      `<Scene>` components plus optional plain-`<img>` interludes.
+- [ ] Build `Scene.astro` accepting `pattern: "cover" | "reveal"` and an
+      image source. Implements the sticky-image + (optional negative-margin)
+      slab pattern from `/design/option-2`.
+- [ ] Build `TextSlab.astro` and `TitleSlab.astro` — the slab content
+      primitives (display text, body, monospace label).
+
+**Layout 2 — Smear:**
+
+- [ ] Build `SmearLayout.astro` — page wrapper.
+- [ ] Build `SmearHero.astro` — first image bleeds off the right edge with
+      title pinned to lower-left using `mix-blend-mode: difference`.
+- [ ] Build `SmearTwoUp.astro` — 62/38 (or 38/62) image + text split.
+- [ ] Build `SmearDisplay.astro` — full-width display heading section, no image.
+- [ ] Build `SmearCaption.astro` — caption-as-headline (oversized type below
+      a full-bleed image).
+
+**Exit criteria:** one example MDX project page exists for each layout
+(`template: slabs` and `template: smear`), both render correctly at phone,
+tablet, desktop, with light + dark + reduced-motion variants honoring R9 / P5.
 
 ---
 

@@ -1,0 +1,69 @@
+---
+/**
+ * BrandMark — the rock.
+ *
+ * On project pages: this IS the zoom-out (R10). Wrapped in an `<a href="/">`.
+ * On the home page: it's the brand identity, not a link to itself.
+ *
+ * Default size 24px (the floating-chrome size). Pass `size` for hero
+ * contexts (e.g., 96px on Home).
+ */
+interface Props {
+  /** Size in pixels (square). Defaults to 24. */
+  size?: number;
+  /** When true, wraps in <a href="/"> (project pages). When false, no link. */
+  asHomeLink?: boolean;
+  /**
+   * When true, the rock is rendered as inverted-white (for use over an
+   * imagery context inside a `mix-blend-mode: difference` parent).
+   * When false, the rock follows the theme via --rock-invert.
+   */
+  forceInvertOnDark?: boolean;
+  /** Optional classnames for positioning. */
+  class?: string;
+  /** Alt text. Empty by default — when used as nav, the link's aria-label
+   * carries semantics. */
+  alt?: string;
+}
+
+const {
+  size = 24,
+  asHomeLink = true,
+  forceInvertOnDark = false,
+  class: extraClass = '',
+  alt = '',
+} = Astro.props;
+
+const markClass = ['brand-mark', forceInvertOnDark && 'force-invert', extraClass]
+  .filter(Boolean)
+  .join(' ');
+const sizeStyle = `width: ${size}px; height: ${size}px;`;
+---
+
+{
+  asHomeLink ? (
+    <a href="/" aria-label="Home" class="brand-mark-link">
+      <span class={markClass} style={sizeStyle}>
+        <img src="/brand-mark.png" alt={alt} />
+      </span>
+    </a>
+  ) : (
+    <span class={markClass} style={sizeStyle}>
+      <img src="/brand-mark.png" alt={alt} />
+    </span>
+  )
+}
+
+<style>
+  .brand-mark-link {
+    display: inline-flex;
+    text-decoration: none;
+    color: inherit;
+  }
+  /* When inside a `mix-blend-mode: difference` ancestor, force the rock
+     to white-on-transparent so the difference blend produces a visible
+     inverse over any background. */
+  .brand-mark.force-invert :global(img) {
+    filter: invert(1);
+  }
+</style>

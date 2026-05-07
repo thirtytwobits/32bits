@@ -1,0 +1,64 @@
+---
+/**
+ * BaseLayout — generic HTML shell.
+ *
+ * Imports the locked-in design system + fonts. Provides <head> meta,
+ * theme switch, and a single <main> slot. No project-specific chrome.
+ *
+ * Used directly by Home and About; ProjectLayout extends this with
+ * project-page-specific chrome.
+ */
+import '@fontsource-variable/space-grotesk';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource-variable/jetbrains-mono';
+import '@styles/design-system.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = 'Projects by Scott Dixon.', ogImage } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Favicon: the rock. Until vectorized, ship the PNG. -->
+    <link rel="icon" type="image/png" href="/brand-mark.png" />
+
+    <!-- OpenGraph / social -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Pre-apply theme from localStorage to avoid a flash of wrong theme.
+         Runs synchronously in <head> before paint. -->
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('theme-32bits');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.dataset.theme = t;
+        }
+      } catch (_) {
+        /* storage unavailable; fall through to system pref */
+      }
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

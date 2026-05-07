@@ -295,6 +295,23 @@ Tracked here so they don't get lost. Answer in place and date the answer.
   project pages.** The floating brand mark in the top-left carries the
   identity instead. Folded into R10.
 
+### Resolved (continued)
+
+- **Body / display face selection** _(resolved 2026-05-06)_ — **Engineering**
+  type system: **Space Grotesk** (display, headings, navigation) + **IBM Plex
+  Sans** (body) + **JetBrains Mono** (slugs, captions, footer, metadata).
+  All three self-hosted via `@fontsource-variable` / `@fontsource` packages.
+  The mono is a third "voice" used sparingly — small type only — that
+  signals the engineer-author identity without overpowering. R11's "two
+  faces" is honored by display + body; mono is a metadata register, not a
+  primary face.
+- **Color palette** _(resolved 2026-05-06)_ — **Amber** (Gruvbox-flavored).
+  Light: cream-paper bg `#f5f0e8`, warm dark `#3c3836` fg, burnt-orange
+  accent `#af3a03`. Dark: Gruvbox dark0_hard `#1d2021` bg, warm cream
+  `#ebdbb2` fg, bright orange `#fe8019` accent. Dark mode is **deliberately
+  not an inverse** of light — both modes share warmth but invert temperature
+  density. The site feels like the same workshop bench, day or night.
+
 ### Still open
 
 - **Tagline copy on Home** — keep "I like to make things." (current site) or
@@ -302,8 +319,34 @@ Tracked here so they don't get lost. Answer in place and date the answer.
 - **Footer social icons on project pages** — show or hide? Defaulting to
   _show_ unless the design feels too crowded once assembled. Revisit after
   the first project page is built.
-- **Body/display face selection** — specific typeface choices to satisfy R11.
-  Decide during Phase 2.
+- **Layout system (multi-layout)** _(resolved 2026-05-06)_ — Project pages
+  support **two** layouts authors pick from per-project via the
+  `template:` frontmatter field. (`template` rather than `layout` because
+  Astro's MDX integration treats `layout:` as a magic import path.) Both
+  ship in Phase 2.
+  - **`template: slabs`** — viewport-height sections built around a single
+    primitive (`<Scene>`) with two patterns selectable per scene:
+    - **`pattern: cover`** — sticky image visible first; a solid slab is
+      in flow after the image and rises from below to cover it.
+    - **`pattern: reveal`** — sticky image pinned at viewport top from
+      scene start, with a solid slab pulled on top via
+      `margin-top: -100vh`. Image is **static** behind the slab; as the
+      reader scrolls, the slab departs upward off the viewport and the
+      image (which was always there) is exposed. A `.dwell` spacer
+      (default 200vh) gives the revealed image a sticky window before
+      the scene ends.
+      Plain full-bleed `<img>` elements are mixable between scenes for
+      rhythm. No scroll-snap. Pure CSS via `position: sticky` + z-index;
+      no JavaScript.
+  - **`template: smear`** — asymmetric editorial composition: mix of
+    full-bleed images, 60/38 percentage-width splits, hero images that
+    bleed off the right edge, and text-only display sections at
+    `clamp(3rem, 9vw, 7.5rem)` size. Each composition earns its own.
+
+  The reference mockups live at `/design/option-1`–`/design/option-3`
+  and remain in the repo until the production components land in
+  Phase 2.
+
 - **Brand mark asset** — the polygonal "rock" logo from the existing site
   needs to be exported as an SVG (or recreated cleanly as one) before R10's
   zoom-out element can be implemented. Capture in Phase 0 inventory.
@@ -326,3 +369,21 @@ Tracked here so they don't get lost. Answer in place and date the answer.
   button); Previous/Next **terminates at the list ends** rather than
   wrapping; **no tagline on project pages**. Surfaced a new open question
   for the brand mark SVG asset.
+- **2026-05-06** — Locked in **typeface selection** (Space Grotesk + IBM
+  Plex Sans + JetBrains Mono — the "Engineering" pairing) and **color
+  palette** (the "Amber" / Gruvbox-flavored variant — warm cream/walnut
+  light, warm cool-dark with cream fg and burnt-orange accent). Surfaced
+  a new open question for layout strategy (full-bleed stream vs slabs vs
+  smear vs tall — mockups under `/design`).
+- **2026-05-06** — Layout direction set: **Slabs** _and_ **Smear** will
+  both be supported as production layouts, picked per-project via the
+  `template:` frontmatter (renamed from `layout:` to avoid an Astro MDX
+  collision). Stream and Tall dropped. Iterating on a sticky-image
+  "Slabs-Reveal" variant.
+- **2026-05-06** — **Layout system fully resolved.** `slabs` is now a
+  single primitive with two scene patterns (`cover` + `reveal`) — the
+  reveal pattern pins the image static at viewport top while a
+  negative-margin slab departs upward off the screen. `smear` is the
+  asymmetric editorial layout. Both are pure CSS, no JS. Reference
+  mockups at `/design/option-1` (Slabs/Slabs-Reveal demo) and
+  `/design/option-3` (Smear) until Phase 2 components land.

@@ -1,0 +1,35 @@
+---
+/**
+ * Dynamic project route — /projects/<slug>.
+ *
+ * One MDX file per project under src/content/projects/. The frontmatter
+ * `layout` field (slabs | smear) only affects what components the MDX
+ * body uses; chrome (brand mark, theme switch, prev/next, footer) is
+ * shared via ProjectLayout.
+ *
+ * `draft: true` projects are excluded from the build entirely.
+ * `hidden: true` projects are built (reachable by URL) but excluded
+ * from Home + the Prev/Next ring.
+ */
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ProjectLayout from '@layouts/ProjectLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.data.slug ?? project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<ProjectLayout project={project}>
+  <Content />
+</ProjectLayout>

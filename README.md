@@ -52,7 +52,7 @@ This is the operation most of this project's design exists to make easy.
      src: /media/my-new-project/hero.jpg
      alt: 'What the hero image shows'
    summary: 'One-liner shown on the Home overview.'
-   layout: default # or `scroll-scene`
+   template: slabs # or `smear`
    draft: false # true = excluded from build entirely
    hidden: false # true = built and deployed but excluded from Home
    ---

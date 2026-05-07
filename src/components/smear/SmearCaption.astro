@@ -1,0 +1,54 @@
+---
+/**
+ * SmearCaption — caption-as-headline.
+ *
+ * A short caption below an image, set at 2-4rem display size. Borrows
+ * the magazine convention of treating the caption itself as a typographic
+ * moment, rather than a dim line of italic at 12px.
+ *
+ * Sits on a deeper background tone than the page (var(--bg-deep)) to
+ * visually mark it as supplementary commentary rather than primary text.
+ */
+interface Props {
+  label?: string;
+}
+
+const { label } = Astro.props;
+---
+
+<section class="smear-caption">
+  {label && <p class="label">{label}</p>}
+  <div class="caption"><slot /></div>
+</section>
+
+<style>
+  .smear-caption {
+    background: var(--bg-deep);
+    padding: 4rem 4rem 6rem;
+  }
+  @media (max-width: 720px) {
+    .smear-caption {
+      padding: 3rem 1.5rem 4rem;
+    }
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--muted);
+    margin: 0 0 1.5rem;
+  }
+  .caption :global(*) {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 24ch;
+    color: var(--fg);
+  }
+  .caption :global(em) {
+    font-style: normal;
+    color: var(--accent);
+  }
+</style>

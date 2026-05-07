@@ -1,0 +1,119 @@
+---
+/**
+ * SmearTwoUp — asymmetric image + text composition.
+ *
+ * Two columns at 62/38 (or 38/62). Image fills its column at natural
+ * aspect ratio. Text column sits in the gutter. Authors choose which
+ * side the image sits on via the `align` prop.
+ *
+ *   align="right" → text 38% on left, image 62% on right
+ *   align="left"  → image 62% on left, text 38% on right
+ *
+ * On mobile both columns stack: image full-width on top, text below.
+ *
+ * The slot is the text content. `label` is the optional monospace
+ * micro-label above the text (e.g., "// premise").
+ */
+interface Props {
+  image: string;
+  alt: string;
+  align?: 'left' | 'right';
+  label?: string;
+}
+
+const { image, alt, align = 'right', label } = Astro.props;
+---
+
+<section class:list={['two-up', align]}>
+  <div class="text-col">
+    {label && <p class="label">{label}</p>}
+    <div class="prose"><slot /></div>
+  </div>
+  <div class="img-col">
+    <img src={image} alt={alt} loading="lazy" decoding="async" />
+  </div>
+</section>
+
+<style>
+  .two-up {
+    display: grid;
+    align-items: center;
+    background: var(--bg);
+  }
+  /* When image is on the right, text-col is first, image-col is second.
+     The grid template puts text in 38%, image in 62%. */
+  .two-up.right {
+    grid-template-columns: 38% 62%;
+  }
+  /* When image is on the left, swap source order via grid-area so DOM
+     order stays text-then-image (better reading order on mobile). */
+  .two-up.left {
+    grid-template-columns: 62% 38%;
+  }
+  .two-up.left .text-col {
+    grid-column: 2;
+  }
+  .two-up.left .img-col {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  @media (max-width: 720px) {
+    .two-up.right,
+    .two-up.left {
+      grid-template-columns: 1fr;
+    }
+    .two-up.left .text-col,
+    .two-up.left .img-col,
+    .two-up.right .text-col,
+    .two-up.right .img-col {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .two-up .text-col {
+      order: 2;
+    }
+    .two-up .img-col {
+      order: 1;
+    }
+  }
+
+  .text-col {
+    padding: 4rem 3rem;
+  }
+  @media (max-width: 720px) {
+    .text-col {
+      padding: 3rem 1.5rem;
+    }
+  }
+  .img-col img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--muted);
+    margin: 0 0 1rem;
+  }
+  .prose :global(p) {
+    font-family: var(--font-body);
+    font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+  }
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+  .prose :global(em) {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--accent);
+  }
+</style>

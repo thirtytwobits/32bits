@@ -1,0 +1,482 @@
+---
+/**
+ * Layout 03 — "Smear"
+ *
+ * Philosophy: editorial / zine. Asymmetric. Some images go full-bleed,
+ * others break out to 60-80% width pushed to one edge. Text often
+ * appears as oversized display type spanning the page. Negative space
+ * is deliberate, not centered.
+ */
+import '@fontsource-variable/space-grotesk';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource-variable/jetbrains-mono';
+import '@styles/design-system.css';
+
+const SQ = 'https://images.squarespace-cdn.com/content/v1/593de2cd3e00be288f77c692';
+const img = {
+  hero: `${SQ}/1742871116774-S43STVJ3XHT9S0OXIMEM/dangerlab.png?format=2500w`,
+  lab: `${SQ}/95b8ab0e-f11d-4c4a-ac8f-0f837379ad49/IMG_0824.JPG?format=2500w`,
+  cad: `${SQ}/2cc13804-6bb5-4a03-ba10-7ae86c56b520/Stackup_FFF_MKII_2025-Apr-13_08-03-47PM-000_CustomizedView20432568841.png?format=2500w`,
+  prusa: `${SQ}/3d3216d4-0256-4eb7-b364-f8f835eb9df5/began-using-a-webapp-shortcut-for-prusaconnect-thought-it-v0-8608sohp7ujc1.png?format=2500w`,
+  detail: `${SQ}/1742876946171-DYQYWL1JM8VZH37WLHKQ/IMG_4147.png?format=2500w`,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Layout 03 — Smear</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      .topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+        z-index: 50;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        mix-blend-mode: difference;
+        color: #f5f0e8;
+      }
+      .topbar a {
+        text-decoration: none;
+      }
+      /* See option-1: difference-blend visibility override. */
+      .topbar .rock-fixed img {
+        filter: invert(1);
+      }
+
+      /* Hero: title pinned to lower-left, first image bleeds in from the right
+         and extends partway off-page. */
+      .hero {
+        position: relative;
+        min-height: 90vh;
+        overflow: hidden;
+      }
+      .hero .text {
+        position: absolute;
+        bottom: 4rem;
+        left: 4rem;
+        z-index: 2;
+        max-width: min(60ch, 50vw);
+      }
+      @media (max-width: 720px) {
+        .hero .text {
+          left: 1.5rem;
+          right: 1.5rem;
+          bottom: 2rem;
+          max-width: none;
+        }
+      }
+      .hero .meta {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        margin: 0 0 0.75rem;
+      }
+      .hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(3.5rem, 11vw, 9rem);
+        font-weight: 600;
+        letter-spacing: -0.05em;
+        line-height: 0.88;
+        margin: 0;
+        mix-blend-mode: difference;
+        color: var(--bg);
+      }
+      .hero img {
+        position: absolute;
+        top: 0;
+        right: -10vw;
+        width: 80vw;
+        height: 100%;
+        object-fit: cover;
+      }
+      @media (max-width: 720px) {
+        .hero img {
+          position: static;
+          width: 100vw;
+          height: 60vh;
+        }
+      }
+
+      /* Full-bleed image */
+      .bleed {
+        display: block;
+        width: 100vw;
+        height: auto;
+      }
+
+      /* Display heading section — no image, type fills the screen. */
+      .display-section {
+        padding: 10rem 4rem 8rem;
+        background: var(--bg);
+      }
+      @media (max-width: 720px) {
+        .display-section {
+          padding: 5rem 1.5rem 4rem;
+        }
+      }
+      .display-section .label {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        margin: 0 0 1.5rem;
+      }
+      .display-section .head {
+        font-family: var(--font-display);
+        font-size: clamp(3rem, 9vw, 7.5rem);
+        font-weight: 500;
+        letter-spacing: -0.045em;
+        line-height: 0.95;
+        margin: 0;
+        max-width: 18ch;
+      }
+      .display-section .head em {
+        font-style: normal;
+        color: var(--accent);
+      }
+
+      /* Asymmetric two-up: image on one side, text in the gutter. */
+      .two-up {
+        display: grid;
+        align-items: center;
+        background: var(--bg);
+      }
+      .two-up.right {
+        grid-template-columns: 38% 62%;
+      }
+      .two-up.left {
+        grid-template-columns: 62% 38%;
+      }
+      @media (max-width: 720px) {
+        .two-up.right,
+        .two-up.left {
+          grid-template-columns: 1fr;
+        }
+      }
+      .two-up .text-col {
+        padding: 4rem 3rem;
+      }
+      @media (max-width: 720px) {
+        .two-up .text-col {
+          padding: 3rem 1.5rem;
+          order: 2;
+        }
+      }
+      .two-up .img-col img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .two-up .label {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        margin: 0 0 1rem;
+      }
+      .two-up p {
+        font-family: var(--font-body);
+        font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+        line-height: 1.55;
+        margin: 0 0 1.25rem;
+      }
+      .two-up p code {
+        font-family: var(--font-mono);
+        font-size: 0.9em;
+        color: var(--accent);
+      }
+
+      /* Caption-as-headline: oversized type below an image. */
+      .caption-headline {
+        background: var(--bg-deep);
+        padding: 4rem 4rem 6rem;
+      }
+      @media (max-width: 720px) {
+        .caption-headline {
+          padding: 3rem 1.5rem 4rem;
+        }
+      }
+      .caption-headline .label {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        margin: 0 0 1.5rem;
+      }
+      .caption-headline p {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 4rem);
+        font-weight: 500;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        margin: 0;
+        max-width: 24ch;
+      }
+
+      /* Prev/next: floating, asymmetric — left bottom, right bottom */
+      .prevnext {
+        background: var(--bg);
+        padding: 6rem 4rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 2rem;
+      }
+      @media (max-width: 720px) {
+        .prevnext {
+          padding: 3rem 1.5rem;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 2rem;
+        }
+      }
+      .prevnext a {
+        text-decoration: none;
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 3vw, 2.25rem);
+        font-weight: 500;
+        letter-spacing: -0.03em;
+        color: var(--fg);
+      }
+      .prevnext a:hover {
+        color: var(--accent);
+      }
+      .prevnext a.next {
+        text-align: right;
+      }
+      .prevnext .label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--muted);
+        letter-spacing: 0;
+        margin-bottom: 0.5rem;
+      }
+
+      .footer {
+        background: var(--bg);
+        padding: 2rem 4rem 4rem;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      @media (max-width: 720px) {
+        .footer {
+          padding: 1rem 1.5rem 3rem;
+        }
+      }
+      .footer .icons {
+        display: flex;
+        gap: 1.25rem;
+      }
+
+      .notes {
+        background: var(--bg-deep);
+        padding: 6rem 4rem;
+        border-top: 1px solid var(--rule);
+      }
+      @media (max-width: 720px) {
+        .notes {
+          padding: 4rem 1.5rem;
+        }
+      }
+      .notes h3 {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 0.75rem;
+      }
+      .notes p,
+      .notes li {
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: var(--muted);
+        max-width: 70ch;
+      }
+      .notes ul {
+        padding-left: 1.25rem;
+      }
+      .notes strong {
+        color: var(--fg);
+        font-weight: 600;
+      }
+      .notes .label {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--muted);
+        margin: 0;
+      }
+      .notes code {
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <a href="/">
+        <span class="brand-mark rock-fixed"><img src="/brand-mark.png" alt="Home" /></span>
+      </a>
+      <span class="theme-switch">
+        <button data-theme-button="light" aria-pressed="false">light</button>
+        <button data-theme-button="system" aria-pressed="true">system</button>
+        <button data-theme-button="dark" aria-pressed="false">dark</button>
+      </span>
+    </div>
+
+    <!-- Hero — title at lower-left, first image bleeds off the right edge -->
+    <header class="hero">
+      <img src={img.lab} alt="A disorganized lab bench covered in devkits" />
+      <div class="text">
+        <p class="meta">/projects/danger-lab · 01 of 25</p>
+        <h1>Danger<br />Lab</h1>
+      </div>
+    </header>
+
+    <!-- Asymmetric: text in left gutter, image right (62%) -->
+    <section class="two-up right">
+      <div class="text-col">
+        <p class="label">// premise</p>
+        <p>
+          When working with cyber-physical systems you end up dealing with a lot of devkits,
+          sensors, adapters, probes, batteries, breadboards, and wires.
+        </p>
+        <p>
+          Prototyping speed leads to disorganization, and disorganization leads to debugging
+          hardware instead of software.
+        </p>
+      </div>
+      <div class="img-col">
+        <img src={img.cad} alt="CAD render of the Danger Lab module stack" />
+      </div>
+    </section>
+
+    <!-- Display heading section — no image, big type -->
+    <section class="display-section">
+      <p class="label">// the question</p>
+      <p class="head">
+        How much of your debug time has been spent on a <em>loose wire</em>?
+      </p>
+    </section>
+
+    <!-- Full-bleed image -->
+    <img class="bleed" src={img.hero} alt="Hero render of the assembled module" />
+
+    <!-- Asymmetric: image left (62%), text right -->
+    <section class="two-up left">
+      <div class="img-col">
+        <img src={img.prusa} alt="Prusa Connect web shortcut on iOS" />
+      </div>
+      <div class="text-col">
+        <p class="label">// the spec</p>
+        <p>
+          The base is a <code>6 mm</code> expanded-PVC sheet, <code>30.5 cm</code> square, with five <code
+            >4 mm</code
+          > holes.
+        </p>
+        <p>
+          PVC was chosen for the balance between rigidity and workability, and because it doesn't
+          conduct.
+        </p>
+      </div>
+    </section>
+
+    <!-- Full-bleed image -->
+    <img class="bleed" src={img.detail} alt="A finished Danger Lab module on the bench" />
+
+    <!-- Caption-as-headline -->
+    <section class="caption-headline">
+      <p class="label">// fig. 04 — bench-tested</p>
+      <p>The unglamorous fix to the chaos that erases a Sunday.</p>
+    </section>
+
+    <!-- Prev/next -->
+    <nav class="prevnext" aria-label="Adjacent projects">
+      <a href="#">
+        <span class="label">← prev</span>
+        Stacking Stones
+      </a>
+      <a href="#" class="next">
+        <span class="label">next →</span>
+        Dragon Head
+      </a>
+    </nav>
+
+    <footer class="footer">
+      <span>// I like to make things.</span>
+      <span class="icons">
+        <span>github</span>
+        <span>linkedin</span>
+      </span>
+    </footer>
+
+    <aside class="notes">
+      <p class="label">[layout · 03 · smear]</p>
+      <h3>What's intentional</h3>
+      <ul>
+        <li>
+          <strong>Asymmetric mix.</strong> Some images full-bleed (100vw); some run 62% pushed to one
+          edge with text in the 38% gutter; one image bleeds <em>off</em> the page (extends past <code
+            >100vw</code
+          > by 10vw on the right).
+        </li>
+        <li>
+          <strong>Text-only display sections</strong> earn their place with sheer size — <code
+            >clamp(3rem, 9vw, 7.5rem)</code
+          > is the operating range. Display type does the work usually done by chrome.
+        </li>
+        <li>
+          <strong>Hero text uses <code>mix-blend-mode: difference</code></strong> over the background
+          image — guarantees legibility regardless of what the image shows underneath.
+        </li>
+        <li>
+          <strong>Captions are headlines.</strong> Image attribution is not 12px italic at the bottom
+          — it's 4rem display type on its own slab.
+        </li>
+      </ul>
+      <h3>What's deliberately not used</h3>
+      <ul>
+        <li>No predictable rhythm. Each section earns its own composition.</li>
+        <li>
+          No "image gallery" treatment. Multi-image groupings would force a grid; this layout stays
+          one-thought-at-a-time.
+        </li>
+        <li>
+          No centered content rails — even when text appears in a gutter, it's pushed to one edge of
+          the page, not boxed in the middle.
+        </li>
+      </ul>
+    </aside>
+
+    <script>
+      const root = document.documentElement;
+      const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-button]');
+      const stored = localStorage.getItem('theme-32bits');
+      const apply = (mode: string) => {
+        if (mode === 'light' || mode === 'dark') root.dataset.theme = mode;
+        else root.removeAttribute('data-theme');
+        buttons.forEach((b) =>
+          b.setAttribute('aria-pressed', String(b.dataset.themeButton === mode)),
+        );
+        localStorage.setItem('theme-32bits', mode);
+      };
+      apply(stored ?? 'system');
+      buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.themeButton!)));
+    </script>
+  </body>
+</html>

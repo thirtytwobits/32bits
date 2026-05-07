@@ -1,0 +1,95 @@
+---
+/**
+ * Scene — Slabs layout primitive.
+ *
+ * One image + one slab. The `pattern` prop selects between two
+ * fully-CSS-driven behaviors (see /design/option-2 for the visual
+ * reference and docs/DESIGN.md for the locked spec):
+ *
+ *   pattern: "cover"
+ *     The sticky image is visible first. The slab is in flow AFTER
+ *     the image, so it starts below the fold and rises up to cover
+ *     the image as the reader scrolls.
+ *
+ *   pattern: "reveal"
+ *     The sticky image is pinned at viewport top from scene start.
+ *     The slab is pulled ON TOP of the image via margin-top: -100vh,
+ *     so it covers the static image at scroll-0. As the reader
+ *     scrolls, the slab departs upward and the image (which was
+ *     always there) is exposed. The image then dwells for `dwellVh`
+ *     viewport heights before the scene ends.
+ *
+ * The slab content is the default <slot />. Authors typically pass a
+ * <TextSlab> or <TitleSlab>.
+ *
+ * The image rendering uses an <img> with object-fit: cover so it stays
+ * 100vw × 100vh regardless of source aspect.
+ */
+interface Props {
+  image: string;
+  alt: string;
+  pattern?: 'cover' | 'reveal';
+  /** Image dwell after a reveal slab clears (only used in reveal). */
+  dwellVh?: number;
+  /** Set to "eager" only for the hero scene (above the fold). */
+  loading?: 'lazy' | 'eager';
+}
+
+const { image, alt, pattern = 'cover', dwellVh = 200, loading = 'lazy' } = Astro.props;
+---
+
+<section class:list={['scene', pattern]}>
+  <img
+    class="scene-image"
+    src={image}
+    alt={alt}
+    loading={loading}
+    fetchpriority={loading === 'eager' ? 'high' : 'auto'}
+    decoding="async"
+  />
+  <div class="scene-slab"><slot /></div>
+  {pattern === 'reveal' && <div class="dwell" style={`height: ${dwellVh}vh`} />}
+</section>
+
+<style>
+  .scene {
+    position: relative;
+  }
+
+  /* Sticky image — pinned at viewport top while parent scene is in view.
+     z-index: 1 sits BELOW the slab. */
+  .scene-image {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center;
+    z-index: 1;
+    display: block;
+  }
+
+  /* The slab wrapper passes content through; actual slab styling comes
+     from the <TextSlab>/<TitleSlab> inside. The wrapper's job is just
+     to be a flow box at the right scroll position with the right
+     z-index. */
+  .scene-slab {
+    position: relative;
+    z-index: 2;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* REVEAL: pull the slab on top of the sticky image. */
+  .scene.reveal .scene-slab {
+    margin-top: -100vh;
+  }
+
+  /* Dwell spacer — extends scene height after the slab in a reveal,
+     giving the sticky image room to stay pinned. */
+  .dwell {
+    position: relative;
+    z-index: 0;
+    /* height is set inline from the prop */
+  }
+</style>

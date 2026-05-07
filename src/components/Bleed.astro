@@ -1,0 +1,40 @@
+---
+/**
+ * Bleed — a full-bleed image (100vw, natural aspect, edge-to-edge).
+ *
+ * Shared by both Slabs and Smear layouts. Used between scenes/sections
+ * for "rest" moments where an image stands alone with no slab or text
+ * interaction.
+ *
+ * `loading` defaults to "lazy"; pass "eager" for above-the-fold images
+ * (typically only the hero of the page). `fetchpriority="high"` is set
+ * automatically when loading is eager.
+ */
+interface Props {
+  src: string;
+  alt: string;
+  loading?: 'lazy' | 'eager';
+  /** Optional CSS class for layout-specific tweaks. */
+  class?: string;
+}
+
+const { src, alt, loading = 'lazy', class: extraClass = '' } = Astro.props;
+---
+
+<img
+  class={`bleed ${extraClass}`.trim()}
+  src={src}
+  alt={alt}
+  loading={loading}
+  fetchpriority={loading === 'eager' ? 'high' : 'auto'}
+  decoding="async"
+/>
+
+<style>
+  .bleed {
+    display: block;
+    width: 100vw;
+    height: auto;
+    margin: 0;
+  }
+</style>

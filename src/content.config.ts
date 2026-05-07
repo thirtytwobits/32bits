@@ -35,7 +35,11 @@ const projects = defineCollection({
     slug: z.string().optional(), // defaults to filename
     order: z.number().int().default(0),
     hero,
-    layout: z.enum(['default', 'scroll-scene']).default('default'),
+    // Project page composition template — picks which layout primitives
+    // the MDX body uses. Locked in 2026-05-06 (see docs/DESIGN.md). Named
+    // `template` rather than `layout` because Astro's MDX integration
+    // treats `layout:` as a magic import path and would conflict.
+    template: z.enum(['slabs', 'smear']).default('slabs'),
     summary: z.string().optional(), // shown on Home overview
     draft: z.boolean().default(false), // excluded from build
     hidden: z.boolean().default(false), // shipped, but not on Home / Prev-Next

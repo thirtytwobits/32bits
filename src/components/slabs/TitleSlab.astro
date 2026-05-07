@@ -1,0 +1,68 @@
+---
+/**
+ * TitleSlab — the project's title as a full-screen slab.
+ *
+ * Used in the FIRST scene of a Slabs project page (typically a cover
+ * pattern over the hero image). Contains:
+ *   - A small monospace metadata line (`/projects/<slug> · <position> of <total>`)
+ *   - The big display title
+ *   - Optionally a short summary line below
+ *
+ * Author passes the project title via `title` prop. Position metadata
+ * is optional — when present, it's rendered above the title.
+ */
+interface Props {
+  title: string;
+  meta?: string;
+  summary?: string;
+}
+
+const { title, meta, summary } = Astro.props;
+---
+
+<div class="title-slab">
+  {meta && <p class="meta">{meta}</p>}
+  <h1 set:html={title} />
+  {summary && <p class="summary">{summary}</p>}
+</div>
+
+<style>
+  .title-slab {
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem;
+    gap: 1.5rem;
+  }
+  @media (max-width: 720px) {
+    .title-slab {
+      padding: 4rem 1.5rem;
+    }
+  }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 13vw, 11rem);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 0.88;
+    margin: 0;
+    color: var(--fg);
+  }
+  .summary {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    color: var(--muted);
+    margin: 0;
+    max-width: 50ch;
+    line-height: 1.5;
+  }
+</style>

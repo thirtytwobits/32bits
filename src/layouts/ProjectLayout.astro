@@ -1,0 +1,71 @@
+---
+/**
+ * ProjectLayout — wraps an MDX project body with the shared chrome
+ * required on every project page (R10):
+ *
+ *   - Floating top-bar: brand mark (= zoom-out) + theme switch.
+ *     Uses mix-blend-mode: difference so it stays readable over both
+ *     bg and arbitrary imagery.
+ *   - <main><slot /></main>: the MDX body — Slabs scenes, Smear
+ *     compositions, plain bleed images, etc.
+ *   - <PrevNext>: terminate-no-wrap lateral navigation.
+ *   - <Footer>: no tagline on project pages.
+ *
+ * The project's chosen `layout` (slabs vs smear) only affects what
+ * components the MDX body uses — the chrome is shared.
+ */
+import { type CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import BrandMark from '@components/BrandMark.astro';
+import ThemeSwitch from '@components/ThemeSwitch.astro';
+import Footer from '@components/Footer.astro';
+import PrevNext from '@components/PrevNext.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, hero } = project.data;
+const ogImage = hero.type === 'image' ? hero.src : hero.poster;
+---
+
+<BaseLayout title={`${title} — 32bits.io`} ogImage={ogImage}>
+  <div class="topbar">
+    <BrandMark size={24} forceInvertOnDark={true} alt="Home" />
+    <ThemeSwitch />
+  </div>
+
+  <main>
+    <slot />
+  </main>
+
+  <PrevNext current={project} />
+  <Footer showTagline={false} />
+</BaseLayout>
+
+<style>
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    z-index: 100;
+    /* mix-blend-mode keeps the topbar readable over any background or
+       image. Color is chosen for the difference math: light bg → dark,
+       dark bg → light. */
+    mix-blend-mode: difference;
+    color: #f5f0e8;
+  }
+  /* Children of .topbar inherit the blend mode. ThemeSwitch buttons
+     and BrandMark img all participate. */
+  main {
+    /* The MDX body should fill width edge-to-edge. main is just a
+       semantic wrapper — no padding, no max-width. */
+    display: block;
+  }
+</style>

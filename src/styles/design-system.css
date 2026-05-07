@@ -1,0 +1,114 @@
+/*
+ * 32bits.io — locked-in design tokens.
+ *
+ * Type:    Engineering — Space Grotesk + IBM Plex Sans + JetBrains Mono
+ * Palette: Amber       — Gruvbox-flavored, warm both modes
+ *
+ * See docs/DESIGN.md (resolved 2026-05-06).
+ *
+ * Pages import this file. Layout-specific CSS lives in the page itself.
+ */
+
+:root {
+  /* type */
+  --font-display: 'Space Grotesk Variable', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace;
+
+  /* palette — light (default) */
+  --bg: #f5f0e8;
+  --fg: #3c3836;
+  --muted: #7c6f64;
+  --accent: #af3a03;
+  --rule: #e3d9c6;
+  --rock-invert: 0;
+
+  /* an even-more-recessed bg shade for stripes / bands within light mode */
+  --bg-deep: #ede4d2;
+}
+
+[data-theme='dark'] {
+  --bg: #1d2021;
+  --fg: #ebdbb2;
+  --muted: #928374;
+  --accent: #fe8019;
+  --rule: #3c3836;
+  --rock-invert: 0.85;
+  --bg-deep: #14171a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #1d2021;
+    --fg: #ebdbb2;
+    --muted: #928374;
+    --accent: #fe8019;
+    --rule: #3c3836;
+    --rock-invert: 0.85;
+    --bg-deep: #14171a;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+/* Theme switch — small floating control, used in every layout. */
+.theme-switch {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.theme-switch button {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 0.4rem;
+  opacity: 0.5;
+}
+.theme-switch button[aria-pressed='true'] {
+  opacity: 1;
+  color: var(--fg);
+}
+
+/* Brand mark — the rock. Inverts on dark.
+ *
+ * IMPORTANT: explicit display + sizing. Without these, when this lives
+ * inside an inline parent (e.g. a non-flex `<a>`), the `<img>` was
+ * resolving its width:100% against the page-level block ancestor and
+ * rendering at viewport-spanning size. Default 24px keeps it subtle. */
+.brand-mark {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: invert(var(--rock-invert));
+}

@@ -1,0 +1,122 @@
+---
+/**
+ * PrevNext — adjacent project navigation (R10 lateral).
+ *
+ * Computes prev/next from the `projects` content collection sorted by
+ * `order`. `hidden` and `draft` projects are excluded from the ring
+ * (so a hidden project isn't reachable via lateral nav, only via
+ * direct URL).
+ *
+ * Terminate-no-wrap: at the first project, prev is absent (rendered
+ * as a placeholder); at the last, next is absent.
+ */
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  current: CollectionEntry<'projects'>;
+}
+
+const { current } = Astro.props;
+
+const all = (await getCollection('projects'))
+  .filter((p) => !p.data.draft && !p.data.hidden)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const idx = all.findIndex((p) => p.id === current.id);
+const prev = idx > 0 ? all[idx - 1] : null;
+const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
+---
+
+<nav class="prevnext" aria-label="Adjacent projects">
+  {
+    prev ? (
+      <a href={`/projects/${prev.data.slug ?? prev.id}`} class="prev">
+        <span class="label">← prev</span>
+        {prev.data.title}
+      </a>
+    ) : (
+      <span class="placeholder" aria-hidden="true" />
+    )
+  }
+  {
+    next ? (
+      <a href={`/projects/${next.data.slug ?? next.id}`} class="next">
+        <span class="label">next →</span>
+        {next.data.title}
+      </a>
+    ) : (
+      <span class="placeholder" aria-hidden="true" />
+    )
+  }
+</nav>
+
+<style>
+  .prevnext {
+    background: var(--bg);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 50vh;
+    align-items: stretch;
+    border-top: 1px solid var(--rule);
+  }
+  @media (max-width: 720px) {
+    .prevnext {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+  }
+  .prevnext > * {
+    padding: 4rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  @media (max-width: 720px) {
+    .prevnext > * {
+      padding: 3rem 1.5rem;
+      min-height: 25vh;
+    }
+  }
+  .prevnext a {
+    text-decoration: none;
+    color: var(--fg);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    transition: color 120ms ease;
+  }
+  .prevnext a:hover {
+    color: var(--accent);
+  }
+  .prevnext a.next {
+    text-align: right;
+    align-items: flex-end;
+    border-left: 1px solid var(--rule);
+  }
+  @media (max-width: 720px) {
+    .prevnext a.next {
+      border-left: none;
+      border-top: 1px solid var(--rule);
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+  .prevnext .label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  /* Placeholder slot when prev or next is absent (terminate behavior). */
+  .placeholder {
+    display: block;
+  }
+  /* When the placeholder is the SECOND child (i.e., next is missing on
+     last project), still draw the divider on its left edge. */
+  .placeholder + .placeholder {
+    border-left: 1px solid var(--rule);
+  }
+</style>
