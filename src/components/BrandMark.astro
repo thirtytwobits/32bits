@@ -8,10 +8,12 @@
  * Default size 24px (the floating-chrome size). Pass `size` for hero
  * contexts (e.g., 96px on Home).
  */
+import { url } from '@lib/url';
+
 interface Props {
   /** Size in pixels (square). Defaults to 24. */
   size?: number;
-  /** When true, wraps in <a href="/"> (project pages). When false, no link. */
+  /** When true, wraps in a link to Home (project pages). When false, no link. */
   asHomeLink?: boolean;
   /**
    * When true, the rock is rendered as inverted-white (for use over an
@@ -42,14 +44,14 @@ const sizeStyle = `width: ${size}px; height: ${size}px;`;
 
 {
   asHomeLink ? (
-    <a href="/" aria-label="Home" class="brand-mark-link">
+    <a href={url('/')} aria-label="Home" class="brand-mark-link">
       <span class={markClass} style={sizeStyle}>
-        <img src="/brand-mark.png" alt={alt} />
+        <img src={url('/brand-mark.png')} alt={alt} />
       </span>
     </a>
   ) : (
     <span class={markClass} style={sizeStyle}>
-      <img src="/brand-mark.png" alt={alt} />
+      <img src={url('/brand-mark.png')} alt={alt} />
     </span>
   )
 }

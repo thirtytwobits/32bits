@@ -9,7 +9,8 @@
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
       "@content/*": ["src/content/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@lib/*": ["src/lib/*"]
     },
     "jsx": "preserve",
     "strict": true,

@@ -1,0 +1,115 @@
+---
+/**
+ * HomeTile — one project's tile on the Home overview.
+ *
+ * Full-bleed (100vw) hero image at 80vh on desktop / 60vh on mobile.
+ * The whole tile is a clickable region linking to the project page.
+ * Title is overlaid bottom-left using mix-blend-mode: difference for
+ * legibility regardless of the underlying image.
+ *
+ * The first tile on the page should pass loading="eager" so the
+ * largest contentful paint (LCP) image is high-priority.
+ */
+import { type CollectionEntry } from 'astro:content';
+import { url } from '@lib/url';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  loading?: 'lazy' | 'eager';
+}
+
+const { project, loading = 'lazy' } = Astro.props;
+const { title, slug, hero, summary, order } = project.data;
+const projectPath = `/projects/${slug ?? project.id}`;
+const href = url(projectPath);
+// `meta` shows the canonical project path (no base prefix) so it reads
+// the same in staging and production.
+const meta = `${projectPath} · ${String(order).padStart(2, '0')}`;
+---
+
+<a href={href} class="tile">
+  <img
+    src={hero.src}
+    alt={hero.alt ?? ''}
+    loading={loading}
+    fetchpriority={loading === 'eager' ? 'high' : 'auto'}
+    decoding="async"
+  />
+  <div class="overlay">
+    <p class="meta">{meta}</p>
+    <h2>{title}</h2>
+    {summary && <p class="summary">{summary}</p>}
+  </div>
+</a>
+
+<style>
+  .tile {
+    position: relative;
+    display: block;
+    width: 100vw;
+    height: 80vh;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+  }
+  @media (max-width: 720px) {
+    .tile {
+      height: 60vh;
+    }
+  }
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 600ms cubic-bezier(0.2, 0, 0.1, 1);
+  }
+  .tile:hover img {
+    transform: scale(1.015);
+  }
+  .overlay {
+    position: absolute;
+    bottom: 4rem;
+    left: 4rem;
+    right: 4rem;
+    z-index: 2;
+    color: var(--bg);
+    mix-blend-mode: difference;
+    pointer-events: none;
+  }
+  @media (max-width: 720px) {
+    .overlay {
+      bottom: 2rem;
+      left: 1.5rem;
+      right: 1.5rem;
+    }
+  }
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem;
+    opacity: 0.85;
+  }
+  .tile h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin: 0;
+  }
+  .summary {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.3vw, 1.1875rem);
+    line-height: 1.45;
+    margin: 1rem 0 0;
+    max-width: 50ch;
+  }
+  /* Reduced-motion: no scale on hover. */
+  @media (prefers-reduced-motion: reduce) {
+    .tile:hover img {
+      transform: none;
+    }
+  }
+</style>

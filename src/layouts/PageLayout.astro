@@ -1,0 +1,113 @@
+---
+/**
+ * PageLayout — chrome for top-level content pages (e.g. About).
+ *
+ * Not as media-forward as project pages — these are mostly text. Has
+ * a constrained content measure (`max-w` ~70ch via .prose), with the
+ * shared floating chrome (BrandMark zoom-out + ThemeSwitch) and the
+ * usual scroll-to-top + footer at the bottom.
+ *
+ * Footer renders without the tagline (consistent with project pages —
+ * only Home gets the tagline per R10).
+ */
+import BaseLayout from './BaseLayout.astro';
+import BrandMark from '@components/BrandMark.astro';
+import ThemeSwitch from '@components/ThemeSwitch.astro';
+import Footer from '@components/Footer.astro';
+import ScrollToTop from '@components/ScrollToTop.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={`${title} — 32bits.io`} description={description}>
+  <div class="topbar">
+    <BrandMark size={24} forceInvertOnDark={true} alt="Home" />
+    <ThemeSwitch />
+  </div>
+
+  <main>
+    <article class="prose">
+      <slot />
+    </article>
+  </main>
+
+  <ScrollToTop />
+  <Footer showTagline={false} />
+</BaseLayout>
+
+<style>
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    z-index: 100;
+    mix-blend-mode: difference;
+    color: #f5f0e8;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  main {
+    padding: 8rem 4rem 6rem;
+  }
+  @media (max-width: 720px) {
+    main {
+      padding: 6rem 1.5rem 4rem;
+    }
+  }
+  .prose {
+    max-width: 65ch;
+    margin: 0;
+    /* Left-aligned, never centered, per R8 "no centered content rails". */
+  }
+  .prose :global(h1) {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin: 0 0 2rem;
+  }
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    margin: 3rem 0 1rem;
+  }
+  .prose :global(p) {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    margin: 0 0 1.25rem;
+  }
+  .prose :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .prose :global(ul) {
+    padding-left: 1.25rem;
+  }
+  .prose :global(li) {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    margin: 0 0 0.5rem;
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--accent);
+  }
+</style>

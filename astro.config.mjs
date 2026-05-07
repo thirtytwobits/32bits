@@ -4,13 +4,19 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// 32bits.io is hosted on GitHub Pages with the apex custom domain.
-// `site` is the public URL — used by the sitemap, canonical tags, and
-// any absolute-URL helpers. With a custom apex domain, `base` stays at '/'.
+// Currently deploying to the GitHub Pages staging URL — the project
+// repo is served at `thirtytwobits.github.io/32bits/`, so `base` must
+// match that subpath. When the apex custom domain is cut over (Phase 7),
+// flip these values:
+//   site: 'https://32bits.io',  base: '/'
+// and add a `public/CNAME` file containing `32bits.io`.
 //
-// See ROADMAP.md §6 (CI / Pages) and docs/DESIGN.md R10 (IA).
+// All internal paths in code go through `src/lib/url.ts` (the `url()`
+// helper) so the base prefix is applied uniformly when this changes.
 export default defineConfig({
-  site: 'https://32bits.io',
+  site: 'https://thirtytwobits.github.io',
+  base: '/32bits',
+  trailingSlash: 'ignore',
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

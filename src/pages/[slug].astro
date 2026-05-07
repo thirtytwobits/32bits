@@ -1,0 +1,34 @@
+---
+/**
+ * Dynamic top-level page route — /<slug>.
+ *
+ * Backed by the `pages` content collection (src/content/pages/*.mdx).
+ * Used for non-project content like About.
+ *
+ * NOTE: this catches single-segment top-level URLs only. /projects/*
+ * is more specific (handled by src/pages/projects/[slug].astro) and
+ * wins. Don't author a page in the `pages` collection with a slug
+ * that conflicts with a directory in src/pages/ (e.g. "projects").
+ */
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages', ({ data }) => !data.draft);
+  return pages.map((page) => ({
+    params: { slug: page.data.slug ?? page.id },
+    props: { page },
+  }));
+}
+
+interface Props {
+  page: CollectionEntry<'pages'>;
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<PageLayout title={page.data.title} description={page.data.description}>
+  <Content />
+</PageLayout>

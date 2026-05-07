@@ -14,6 +14,7 @@ import '@fontsource/ibm-plex-sans/500.css';
 import '@fontsource/ibm-plex-sans/600.css';
 import '@fontsource-variable/jetbrains-mono';
 import '@styles/design-system.css';
+import { url } from '@lib/url';
 
 interface Props {
   title: string;
@@ -35,7 +36,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <link rel="canonical" href={canonical} />
 
     <!-- Favicon: the rock. Until vectorized, ship the PNG. -->
-    <link rel="icon" type="image/png" href="/brand-mark.png" />
+    <link rel="icon" type="image/png" href={url('/brand-mark.png')} />
 
     <!-- OpenGraph / social -->
     <meta property="og:title" content={title} />

@@ -1,13 +1,14 @@
 ---
 /**
- * Home page — placeholder.
+ * Home — DESIGN R10 / Level 0.
  *
- * Phase 2 deliverable: just a project list, enough to test that
- * /projects/<slug> routes work and PrevNext links correctly.
+ * A vertical reel of full-bleed project tiles in `order` ascending.
+ * No centered content rails. The brand mark sits in the top-left as
+ * an identity element (not a link, since this is Home). The footer
+ * shows the tagline (Home only).
  *
- * Phase 3 will build the real Home overview (per DESIGN R10 / Level 0)
- * with proper hero treatment, project tiles using actual hero images,
- * and the home-specific footer (tagline + social).
+ * Hidden / draft projects are excluded from the overview but still
+ * reachable by direct URL (hidden) or not built at all (draft).
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '@layouts/BaseLayout.astro';
@@ -15,6 +16,7 @@ import BrandMark from '@components/BrandMark.astro';
 import ThemeSwitch from '@components/ThemeSwitch.astro';
 import Footer from '@components/Footer.astro';
 import ScrollToTop from '@components/ScrollToTop.astro';
+import HomeTile from '@components/HomeTile.astro';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft && !data.hidden)).sort(
   (a, b) => a.data.order - b.data.order,
@@ -23,28 +25,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft && !
 
 <BaseLayout title="thirty-two">
   <div class="topbar">
-    <BrandMark size={48} asHomeLink={false} alt="" />
+    <BrandMark size={32} asHomeLink={false} forceInvertOnDark={true} alt="" />
     <ThemeSwitch />
   </div>
 
   <main>
-    <h1 class="site-title">thirty-two</h1>
-    <p class="tagline">I like to make things.</p>
-
-    <ol class="projects">
-      {
-        projects.map((p) => (
-          <li>
-            <a href={`/projects/${p.data.slug ?? p.id}`}>
-              <span class="num">{String(p.data.order).padStart(2, '0')}</span>
-              <span class="title">{p.data.title}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ol>
-
-    <p class="todo">// Phase 3 replaces this list with real project tiles + hero images.</p>
+    {projects.map((p, i) => <HomeTile project={p} loading={i === 0 ? 'eager' : 'lazy'} />)}
   </main>
 
   <ScrollToTop />
@@ -60,67 +46,18 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft && !
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 2rem;
+    padding: 1rem 1.5rem;
     z-index: 100;
+    /* Same blend-mode trick as ProjectLayout — keeps the chrome
+       readable over any tile image regardless of palette. */
+    mix-blend-mode: difference;
+    color: #f5f0e8;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
   }
   main {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 7rem 2rem 6rem;
-  }
-  .site-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 600;
-    letter-spacing: -0.05em;
-    line-height: 0.92;
-    margin: 0;
-    color: var(--fg);
-  }
-  .tagline {
-    font-family: var(--font-mono);
-    font-size: 0.9375rem;
-    color: var(--muted);
-    margin: 1rem 0 4rem;
-  }
-  .projects {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid var(--rule);
-  }
-  .projects li {
-    border-bottom: 1px solid var(--rule);
-  }
-  .projects a {
-    display: flex;
-    align-items: baseline;
-    gap: 1.25rem;
-    padding: 1.25rem 0;
-    text-decoration: none;
-    color: var(--fg);
-    transition: color 120ms ease;
-  }
-  .projects a:hover {
-    color: var(--accent);
-  }
-  .projects .num {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--muted);
-    flex-shrink: 0;
-    min-width: 2.5rem;
-  }
-  .projects .title {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-  }
-  .todo {
-    margin-top: 4rem;
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--muted);
+    /* The reel of tiles is the page's primary content. No padding,
+       no max-width — the tiles themselves are 100vw. */
+    display: block;
   }
 </style>

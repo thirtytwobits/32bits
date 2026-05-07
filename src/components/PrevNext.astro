@@ -11,6 +11,7 @@
  * as a placeholder); at the last, next is absent.
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { url } from '@lib/url';
 
 interface Props {
   current: CollectionEntry<'projects'>;
@@ -30,7 +31,7 @@ const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
 <nav class="prevnext" aria-label="Adjacent projects">
   {
     prev ? (
-      <a href={`/projects/${prev.data.slug ?? prev.id}`} class="prev">
+      <a href={url(`/projects/${prev.data.slug ?? prev.id}`)} class="prev">
         <span class="label">← prev</span>
         {prev.data.title}
       </a>
@@ -40,7 +41,7 @@ const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
   }
   {
     next ? (
-      <a href={`/projects/${next.data.slug ?? next.id}`} class="next">
+      <a href={url(`/projects/${next.data.slug ?? next.id}`)} class="next">
         <span class="label">next →</span>
         {next.data.title}
       </a>
