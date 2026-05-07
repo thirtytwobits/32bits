@@ -29,7 +29,7 @@ const meta = `${projectPath} · ${String(order).padStart(2, '0')}`;
 
 <a href={href} class="tile">
   <img
-    src={hero.src}
+    src={url(hero.src)}
     alt={hero.alt ?? ''}
     loading={loading}
     fetchpriority={loading === 'eager' ? 'high' : 'auto'}

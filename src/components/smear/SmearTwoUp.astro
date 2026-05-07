@@ -14,6 +14,8 @@
  * The slot is the text content. `label` is the optional monospace
  * micro-label above the text (e.g., "// premise").
  */
+import { url } from '@lib/url';
+
 interface Props {
   image: string;
   alt: string;
@@ -22,6 +24,7 @@ interface Props {
 }
 
 const { image, alt, align = 'right', label } = Astro.props;
+const src = url(image);
 ---
 
 <section class:list={['two-up', align]}>
@@ -30,7 +33,7 @@ const { image, alt, align = 'right', label } = Astro.props;
     <div class="prose"><slot /></div>
   </div>
   <div class="img-col">
-    <img src={image} alt={alt} loading="lazy" decoding="async" />
+    <img src={src} alt={alt} loading="lazy" decoding="async" />
   </div>
 </section>
 

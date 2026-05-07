@@ -10,6 +10,8 @@
  * (typically only the hero of the page). `fetchpriority="high"` is set
  * automatically when loading is eager.
  */
+import { url } from '@lib/url';
+
 interface Props {
   src: string;
   alt: string;
@@ -19,11 +21,12 @@ interface Props {
 }
 
 const { src, alt, loading = 'lazy', class: extraClass = '' } = Astro.props;
+const resolved = url(src);
 ---
 
 <img
   class={`bleed ${extraClass}`.trim()}
-  src={src}
+  src={resolved}
   alt={alt}
   loading={loading}
   fetchpriority={loading === 'eager' ? 'high' : 'auto'}

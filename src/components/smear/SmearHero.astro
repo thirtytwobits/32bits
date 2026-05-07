@@ -10,6 +10,8 @@
  * On mobile the bleed flattens — image stacks above the title at
  * normal width.
  */
+import { url } from '@lib/url';
+
 interface Props {
   title: string;
   image: string;
@@ -18,10 +20,11 @@ interface Props {
 }
 
 const { title, image, alt, meta } = Astro.props;
+const src = url(image);
 ---
 
 <header class="smear-hero">
-  <img src={image} alt={alt} loading="eager" fetchpriority="high" decoding="async" />
+  <img src={src} alt={alt} loading="eager" fetchpriority="high" decoding="async" />
   <div class="text">
     {meta && <p class="meta">{meta}</p>}
     <h1 set:html={title} />

@@ -4,9 +4,9 @@ slug: 'dragon-head'
 order: 20
 hero:
   type: image
-  src: 'https://images.squarespace-cdn.com/content/v1/593de2cd3e00be288f77c692/1742871116774-S43STVJ3XHT9S0OXIMEM/dangerlab.png?format=2500w'
-  alt: 'Placeholder hero image'
-summary: 'Pan-tilt head mechanism. Real content lands during Phase 5 migration; this page exists to validate the smear layout end-to-end.'
+  src: '/media/dragon-head/hero.png'
+  alt: 'Hero render of the pan-tilt head assembly'
+summary: 'Pan-tilt head mechanism for the L3X-Z robot platform — designed for Alexander Aentinger of 107-systems.'
 template: smear
 ---
 
@@ -16,43 +16,59 @@ import SmearDisplay from '@components/smear/SmearDisplay.astro';
 import SmearCaption from '@components/smear/SmearCaption.astro';
 import Bleed from '@components/Bleed.astro';
 
-export const SQ = 'https://images.squarespace-cdn.com/content/v1/593de2cd3e00be288f77c692';
-
 export const img = {
-  hero: `${SQ}/1742871116774-S43STVJ3XHT9S0OXIMEM/dangerlab.png?format=2500w`,
-  lab: `${SQ}/95b8ab0e-f11d-4c4a-ac8f-0f837379ad49/IMG_0824.JPG?format=2500w`,
-  cad: `${SQ}/2cc13804-6bb5-4a03-ba10-7ae86c56b520/Stackup_FFF_MKII_2025-Apr-13_08-03-47PM-000_CustomizedView20432568841.png?format=2500w`,
-  prusa: `${SQ}/3d3216d4-0256-4eb7-b364-f8f835eb9df5/began-using-a-webapp-shortcut-for-prusaconnect-thought-it-v0-8608sohp7ujc1.png?format=2500w`,
-  detail: `${SQ}/1742876946171-DYQYWL1JM8VZH37WLHKQ/IMG_4147.png?format=2500w`,
+  hero: '/media/dragon-head/hero.png',
+  orthoFront: '/media/dragon-head/ortho-front.png',
+  orthoTop: '/media/dragon-head/ortho-top.png',
+  detail: '/media/dragon-head/detail.png',
+  physical: '/media/dragon-head/physical.png',
 };
 
 <SmearHero
   title="Dragon<br/>Head"
-  image={img.lab}
-  alt="Placeholder image until Phase 5 migration"
+  image={img.hero}
+  alt="Hero render of the pan-tilt head assembly"
   meta="/projects/dragon-head · 02"
 />
 
-<SmearTwoUp image={img.cad} alt="CAD render placeholder" align="right" label="// premise">
-  Placeholder body text. The smear layout puts a 38% text gutter on the left and a 62% image bleed
-  on the right. On mobile both stack to a single column with the image first.
+<SmearTwoUp
+  image={img.orthoFront}
+  alt="Front orthographic view of the pan-tilt head"
+  align="right"
+  label="// the brief"
+>
+A pan-tilt head for [107-systems/l3xz-hw-pan-tilt-head](https://github.com/107-systems/l3xz-hw-pan-tilt-head),
+designed for [Alexander Aentinger](https://github.com/aentinger).
+
+The head sits on top of the L3X-Z platform and gives it eyes — two
+servos, a stack of 3D-printed structural parts, and the cable runs
+that have to survive the full sweep of motion without fouling.
+
 </SmearTwoUp>
 
-<SmearDisplay label="// the question">
+<Bleed src={img.orthoTop} alt="Top orthographic view showing the rotation envelope" />
+
+<SmearDisplay label="// motion studies">
   <p>
-    How much of your debug time has been spent on a <em>loose wire</em>?
+    iPhone slow-mo, full acceleration, <em>hard stop.</em>
   </p>
 </SmearDisplay>
 
-<Bleed src={img.hero} alt="Full-bleed render placeholder" />
-
-<SmearTwoUp image={img.prusa} alt="Screenshot placeholder" align="left" label="// the interface">
-  When the image is on the left, text sits in the right gutter. Same 62/38 split, mirrored. Stacking
-  on mobile is identical regardless of side.
+<SmearTwoUp
+  image={img.physical}
+  alt="The 3D-printed assembly on the bench"
+  align="left"
+  label="// the test"
+>
+  A couple of cheap and dirty motion studies — the head actuating at full acceleration to a hard
+  stop, captured in slow-motion to evaluate how much and for how long the assembly oscillates. A
+  test of rigidity and damping rather than aesthetics.
 </SmearTwoUp>
 
-<Bleed src={img.detail} alt="Detail placeholder" />
+<Bleed src={img.detail} alt="Close-up detail of the joint" />
 
-<SmearCaption label="// fig. 04 — bench-tested">
-  <p>The unglamorous fix to the chaos that erases a Sunday.</p>
+<SmearCaption label="// fig. 04 — joint detail">
+  <p>
+    The bit that has to <em>not</em> wobble.
+  </p>
 </SmearCaption>

@@ -4,7 +4,7 @@ slug: 'danger-lab'
 order: 10
 hero:
   type: image
-  src: 'https://images.squarespace-cdn.com/content/v1/593de2cd3e00be288f77c692/1742871116774-S43STVJ3XHT9S0OXIMEM/dangerlab.png?format=2500w'
+  src: '/media/danger-lab/hero.png'
   alt: 'Hero render of the assembled Danger Lab module'
 summary: 'A common module for mounting small hardware — a personal organizational system for developer-kit chaos.'
 template: slabs
@@ -15,21 +15,19 @@ import TextSlab from '@components/slabs/TextSlab.astro';
 import TitleSlab from '@components/slabs/TitleSlab.astro';
 import Bleed from '@components/Bleed.astro';
 
-export const SQ = 'https://images.squarespace-cdn.com/content/v1/593de2cd3e00be288f77c692';
-
 export const img = {
-  hero: `${SQ}/1742871116774-S43STVJ3XHT9S0OXIMEM/dangerlab.png?format=2500w`,
-  lab: `${SQ}/95b8ab0e-f11d-4c4a-ac8f-0f837379ad49/IMG_0824.JPG?format=2500w`,
-  cad: `${SQ}/2cc13804-6bb5-4a03-ba10-7ae86c56b520/Stackup_FFF_MKII_2025-Apr-13_08-03-47PM-000_CustomizedView20432568841.png?format=2500w`,
-  prusa: `${SQ}/3d3216d4-0256-4eb7-b364-f8f835eb9df5/began-using-a-webapp-shortcut-for-prusaconnect-thought-it-v0-8608sohp7ujc1.png?format=2500w`,
-  detail: `${SQ}/1742876946171-DYQYWL1JM8VZH37WLHKQ/IMG_4147.png?format=2500w`,
+  hero: '/media/danger-lab/hero.png',
+  bench: '/media/danger-lab/bench.jpg',
+  cad: '/media/danger-lab/cad-stackup.png',
+  prusa: '/media/danger-lab/prusa-connect.png',
+  module: '/media/danger-lab/module.png',
 };
 
-{/* === Cover hero — lab photo with title slab === */}
+{/* === Cover hero — bench photo with title slab === */}
 
 <Scene
   pattern="cover"
-  image={img.lab}
+  image={img.bench}
   alt="A disorganized lab bench covered in devkits"
   loading="eager"
 >
@@ -60,7 +58,7 @@ export const img = {
 
 {/* === Reveal: material slab over detail photo === */}
 
-<Scene pattern="reveal" image={img.detail} alt="A finished Danger Lab module on the bench">
+<Scene pattern="reveal" image={img.module} alt="A finished Danger Lab module on the bench">
   <TextSlab label="// material">
     <p class="display">
       PVC. Rigid, workable, <em>doesn't conduct</em>.

@@ -25,6 +25,8 @@
  * The image rendering uses an <img> with object-fit: cover so it stays
  * 100vw × 100vh regardless of source aspect.
  */
+import { url } from '@lib/url';
+
 interface Props {
   image: string;
   alt: string;
@@ -36,12 +38,13 @@ interface Props {
 }
 
 const { image, alt, pattern = 'cover', dwellVh = 200, loading = 'lazy' } = Astro.props;
+const src = url(image);
 ---
 
 <section class:list={['scene', pattern]}>
   <img
     class="scene-image"
-    src={image}
+    src={src}
     alt={alt}
     loading={loading}
     fetchpriority={loading === 'eager' ? 'high' : 'auto'}

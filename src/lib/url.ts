@@ -24,7 +24,27 @@ const BASE = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 
+/**
+ * Normalize a path against the configured site base.
+ *
+ * - External URLs (anything starting with `http://`, `https://`, `//`,
+ *   or `data:`) pass through unchanged. This lets components call
+ *   `url(src)` indiscriminately on image sources that might be either
+ *   local (`/media/foo.jpg`) or external (`https://cdn.example/foo.jpg`).
+ * - Root path `/` returns BASE itself (`/` in production, `/32bits/` in
+ *   staging).
+ * - Anything else has its leading slash stripped and is concatenated
+ *   onto BASE.
+ */
 export const url = (path: string): string => {
+  if (
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('//') ||
+    path.startsWith('data:')
+  ) {
+    return path;
+  }
   if (path === '/' || path === '') return BASE;
   const trimmed = path.replace(/^\//, '');
   return `${BASE}${trimmed}`;
