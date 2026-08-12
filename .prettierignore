@@ -4,3 +4,10 @@ dist
 pnpm-lock.yaml
 _squarespace-snapshot
 public/media
+
+# Content MDX — Prettier collapses single-line content inside JSX
+# wrappers (e.g., <SmearCaption>...</SmearCaption> on one line) which
+# breaks Keystatic's parser (it requires block-level JSX with blank-
+# line-separated children). Keystatic writes these files in the right
+# format on save; just don't let Prettier reformat them.
+src/content

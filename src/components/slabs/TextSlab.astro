@@ -2,31 +2,36 @@
 /**
  * TextSlab — solid full-screen panel for body or display text.
  *
- * Used as the child of <Scene>. Has a single optional monospace label
- * (e.g., "// premise") and the rest is body or display content via slot.
+ * Renders 100vw × 100vh on its own (works standalone in MDX). Children
+ * are plain markdown — Keystatic can edit them visually as paragraphs,
+ * emphasis, links, code. The `variant` prop picks how those paragraphs
+ * are styled:
+ *   - `display` — large display type for hooks / punchlines / titles
+ *   - `body`    — comfortable reading size for prose
  *
- * The slot content can be plain MDX prose or specific elements styled
- * by this component's CSS (`.display`, `.body`).
+ * `label` is an optional monospace micro-label above the content
+ * (e.g., "// premise"). `align` controls vertical alignment of the
+ * stack within the slab.
  */
 interface Props {
+  variant?: 'display' | 'body';
   label?: string;
-  /** Vertical alignment within the slab. Default 'center'. */
   align?: 'top' | 'center' | 'bottom';
 }
 
-const { label, align = 'center' } = Astro.props;
+const { variant = 'body', label, align = 'center' } = Astro.props;
 const justify = align === 'top' ? 'flex-start' : align === 'bottom' ? 'flex-end' : 'center';
 ---
 
-<div class="slab" style={`justify-content: ${justify}`}>
+<div class:list={['slab', `variant-${variant}`]} style={`justify-content: ${justify}`}>
   {label && <p class="label">{label}</p>}
   <div class="content"><slot /></div>
 </div>
 
 <style>
   .slab {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: var(--bg);
     display: flex;
     flex-direction: column;
@@ -44,30 +49,35 @@ const justify = align === 'top' ? 'flex-start' : align === 'bottom' ? 'flex-end'
     color: var(--muted);
     margin: 0;
   }
-  /* Default styling for the slot content. Authors can override via
-     custom classes in MDX. */
+  /* Default tightening for paragraphs in a slab. Variant-specific
+     styling below picks the actual size + family. */
   .content :global(p) {
     margin: 0 0 1.25rem;
   }
   .content :global(p:last-child) {
     margin-bottom: 0;
   }
-  .content :global(.display) {
+
+  /* === BODY VARIANT === */
+  .variant-body .content :global(p) {
+    font-family: var(--font-body);
+    font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 50ch;
+  }
+
+  /* === DISPLAY VARIANT === */
+  .variant-display .content :global(p) {
     font-family: var(--font-display);
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 500;
     letter-spacing: -0.04em;
     line-height: 1.05;
-    margin: 0;
     max-width: 22ch;
   }
-  .content :global(.body) {
-    font-family: var(--font-body);
-    font-size: clamp(1.125rem, 1.6vw, 1.5rem);
-    line-height: 1.5;
-    max-width: 50ch;
-    margin: 0;
-  }
+
+  /* Inline marks — these work in both variants. */
   .content :global(em) {
     font-style: normal;
     color: var(--accent);
@@ -76,5 +86,11 @@ const justify = align === 'top' ? 'flex-start' : align === 'bottom' ? 'flex-end'
     font-family: var(--font-mono);
     font-size: 0.85em;
     color: var(--accent);
+  }
+  .content :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
   }
 </style>

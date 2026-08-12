@@ -64,8 +64,17 @@ const sizeStyle = `width: ${size}px; height: ${size}px;`;
   }
   /* When inside a `mix-blend-mode: difference` ancestor, force the rock
      to white-on-transparent so the difference blend produces a visible
-     inverse over any background. */
+     inverse over any background.
+
+     Stacked drop-shadows in 8 directions thicken the visible strokes —
+     the source PNG is a thin hand-drawn wireframe; against busy images
+     the lines disappear into the noise. Each drop-shadow draws a white
+     copy at the given offset; the union of all copies is a stroke
+     ~1.5× the original width on every side. */
   .brand-mark.force-invert :global(img) {
-    filter: invert(1);
+    filter: invert(1) drop-shadow(0.75px 0 0 #fff) drop-shadow(-0.75px 0 0 #fff)
+      drop-shadow(0 0.75px 0 #fff) drop-shadow(0 -0.75px 0 #fff) drop-shadow(0.5px 0.5px 0 #fff)
+      drop-shadow(-0.5px 0.5px 0 #fff) drop-shadow(0.5px -0.5px 0 #fff)
+      drop-shadow(-0.5px -0.5px 0 #fff);
   }
 </style>

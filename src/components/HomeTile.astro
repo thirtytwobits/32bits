@@ -35,6 +35,14 @@ const meta = `${projectPath} · ${String(order).padStart(2, '0')}`;
     fetchpriority={loading === 'eager' ? 'high' : 'auto'}
     decoding="async"
   />
+  {
+    /* Scrim — a bottom-up dark gradient. Sits between image and overlay
+      and exists for one purpose: guaranteeing the overlay text remains
+      legible regardless of what's in the image. The scrim is
+      *theme-invariant* (same in light and dark mode) for the same
+      reason the image is — neither changes when you flip themes. */
+  }
+  <div class="scrim" aria-hidden="true"></div>
   <div class="overlay">
     <p class="meta">{meta}</p>
     <h2>{title}</h2>
@@ -68,14 +76,27 @@ const meta = `${projectPath} · ${String(order).padStart(2, '0')}`;
   .tile:hover img {
     transform: scale(1.015);
   }
+  /* Scrim: ~bottom 60% of the tile gets a transparent → 70% black
+     gradient. Covers the area where overlay text sits. Above the scrim
+     the image is fully visible. Theme-invariant (image is too). */
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.7) 100%);
+    pointer-events: none;
+  }
   .overlay {
     position: absolute;
     bottom: 4rem;
     left: 4rem;
     right: 4rem;
     z-index: 2;
-    color: var(--bg);
-    mix-blend-mode: difference;
+    /* Theme-invariant: always the warm cream from the light palette,
+       regardless of `data-theme`. Using a hard-coded value (not a
+       CSS variable) is intentional — the scrim is also fixed-tone,
+       so the text color must match. */
+    color: #f5f0e8;
     pointer-events: none;
   }
   @media (max-width: 720px) {
@@ -89,7 +110,9 @@ const meta = `${projectPath} · ${String(order).padStart(2, '0')}`;
     font-family: var(--font-mono);
     font-size: 0.875rem;
     margin: 0 0 0.5rem;
-    opacity: 0.85;
+    /* Slightly muted version of the same warm cream — feels like a
+       caption, not a title. */
+    color: rgba(245, 240, 232, 0.75);
   }
   .tile h2 {
     font-family: var(--font-display);
@@ -105,6 +128,8 @@ const meta = `${projectPath} · ${String(order).padStart(2, '0')}`;
     line-height: 1.45;
     margin: 1rem 0 0;
     max-width: 50ch;
+    /* Slightly less intense than the title so the title leads. */
+    color: rgba(245, 240, 232, 0.9);
   }
   /* Reduced-motion: no scale on hover. */
   @media (prefers-reduced-motion: reduce) {

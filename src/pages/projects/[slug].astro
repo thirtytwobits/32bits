@@ -3,16 +3,48 @@
  * Dynamic project route — /projects/<slug>.
  *
  * One MDX file per project under src/content/projects/. The frontmatter
- * `layout` field (slabs | smear) only affects what components the MDX
- * body uses; chrome (brand mark, theme switch, prev/next, footer) is
- * shared via ProjectLayout.
+ * `template` field (slabs | smear) doesn't change which components
+ * are available — both layouts share the same MDX body context, and
+ * authors compose their page from whichever primitives suit it. Chrome
+ * (brand mark, theme switch, prev/next, footer) is shared via
+ * ProjectLayout.
  *
  * `draft: true` projects are excluded from the build entirely.
  * `hidden: true` projects are built (reachable by URL) but excluded
  * from Home + the Prev/Next ring.
+ *
+ * Component injection: the slabs/smear primitives are passed into
+ * <Content components={...} /> below, so MDX files use them as bare
+ * JSX (`<TextSlab>...</TextSlab>`) without needing top-of-file
+ * imports. This is what lets Keystatic edit the body — Keystatic's
+ * MDX field can't process arbitrary `import` statements.
  */
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import ProjectLayout from '@layouts/ProjectLayout.astro';
+
+import TextSlab from '@components/slabs/TextSlab.astro';
+import TitleSlab from '@components/slabs/TitleSlab.astro';
+import ImageOverlay from '@components/slabs/ImageOverlay.astro';
+import FixedImage from '@components/slabs/FixedImage.astro';
+import Scene from '@components/slabs/Scene.astro';
+import Bleed from '@components/Bleed.astro';
+import SmearHero from '@components/smear/SmearHero.astro';
+import SmearTwoUp from '@components/smear/SmearTwoUp.astro';
+import SmearDisplay from '@components/smear/SmearDisplay.astro';
+import SmearCaption from '@components/smear/SmearCaption.astro';
+
+const components = {
+  TextSlab,
+  TitleSlab,
+  ImageOverlay,
+  FixedImage,
+  Scene,
+  Bleed,
+  SmearHero,
+  SmearTwoUp,
+  SmearDisplay,
+  SmearCaption,
+};
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', ({ data }) => !data.draft);
@@ -31,5 +63,5 @@ const { Content } = await render(project);
 ---
 
 <ProjectLayout project={project}>
-  <Content />
+  <Content components={components} />
 </ProjectLayout>

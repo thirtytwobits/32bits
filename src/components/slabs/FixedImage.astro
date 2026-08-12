@@ -1,0 +1,124 @@
+---
+/**
+ * FixedImage — a sticky 100vh image with an optional overlay text.
+ *
+ * The image is `position: sticky; top: 0`, so it stays pinned at the
+ * viewport top while subsequent `<TextSlab>` siblings scroll up over
+ * it (slabs have z-index: 2, fixed image is z-index: 1). When a later
+ * `<FixedImage>` arrives in the flow, it takes over the sticky spot
+ * (later DOM wins at equal z-index).
+ *
+ * Use without an overlay for "just an image you scroll past while
+ * reading slabs," or with `overlay` set for a display-size headline
+ * that lives on the image itself (mix-blend-mode for legibility).
+ *
+ * Differs from:
+ *   - `Bleed`         — image with natural aspect, scrolls with the page
+ *   - `ImageOverlay`  — image + overlay, scrolls with the page (one
+ *                       per section, alternating with TextSlabs)
+ *   - `Scene`         — sticky image + a single slab embedded inside
+ *                       (cover or reveal pattern; tightly coupled)
+ *   - `FixedImage`    — sticky image, decoupled from any specific slab.
+ *                       Multiple following slabs all scroll over it.
+ */
+import { url } from '@lib/url';
+
+interface Props {
+  image: string;
+  alt: string;
+  /** Optional headline text laid on the image (mix-blend-mode). Leave
+   * empty for a bare image. */
+  overlay?: string;
+  /** Where the overlay text sits in the frame. Ignored when no overlay. */
+  align?: 'center' | 'top' | 'bottom' | 'lower-left';
+  /** Set to "eager" only for the first above-the-fold image on a page. */
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  image,
+  alt,
+  overlay,
+  align = 'center',
+  loading = 'lazy',
+} = Astro.props;
+const src = url(image);
+---
+
+<section class:list={['fixed-image', `align-${align}`]}>
+  <img
+    src={src}
+    alt={alt}
+    loading={loading}
+    fetchpriority={loading === 'eager' ? 'high' : 'auto'}
+    decoding="async"
+  />
+  {
+    overlay && (
+      <div class="overlay">
+        <p>{overlay}</p>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  /* Sticky 100vh — occupies 100vh of flow space and pins to top:0 while
+     within document scroll bounds. z-index: 1 sits below text slabs. */
+  .fixed-image {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .fixed-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 4rem;
+    color: var(--bg);
+    mix-blend-mode: difference;
+    pointer-events: none;
+  }
+  @media (max-width: 720px) {
+    .overlay {
+      padding: 2rem 1.5rem;
+    }
+  }
+  .align-center .overlay {
+    justify-content: center;
+  }
+  .align-top .overlay {
+    justify-content: flex-start;
+    padding-top: 6rem;
+  }
+  .align-bottom .overlay {
+    justify-content: flex-end;
+  }
+  .align-lower-left .overlay {
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  .overlay p {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin: 0;
+    max-width: 22ch;
+  }
+</style>

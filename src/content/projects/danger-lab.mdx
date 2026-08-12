@@ -1,71 +1,35 @@
 ---
-title: 'Danger Lab'
-slug: 'danger-lab'
+title: Danger Lab
 order: 10
 hero:
   type: image
-  src: '/media/danger-lab/hero.png'
-  alt: 'Hero render of the assembled Danger Lab module'
-summary: 'A common module for mounting small hardware — a personal organizational system for developer-kit chaos.'
+  src: /media/danger-lab/hero.png
+  alt: Hero render of the assembled Danger Lab module
+summary: >-
+  A common module for mounting small hardware — a personal organizational system
+  for developer-kit chaos.
 template: slabs
+draft: false
+hidden: false
 ---
+<TextSlab variant="body" align="center">
+  When working with cyber-physical systems you end up dealing with a lot of devkits, sensors, various adapters, probes, fans, power supplies, connectors, batteries, breadboards, and wires….oh the wires! Yes, you need to move fast when prototyping but *consider this*…
+</TextSlab>
 
-import Scene from '@components/slabs/Scene.astro';
-import TextSlab from '@components/slabs/TextSlab.astro';
-import TitleSlab from '@components/slabs/TitleSlab.astro';
-import Bleed from '@components/Bleed.astro';
+<FixedImage align="center" loading="lazy" />
 
-export const img = {
-  hero: '/media/danger-lab/hero.png',
-  bench: '/media/danger-lab/bench.jpg',
-  cad: '/media/danger-lab/cad-stackup.png',
-  prusa: '/media/danger-lab/prusa-connect.png',
-  module: '/media/danger-lab/module.png',
-};
+<TextSlab variant="body" align="center">
+  Some up front neatness counts. This is where the DangerLab concept comes in. DangerLab™ is my library of parts, go-to products, and neat hacks I use to organize my dev kits when starting a project. Of all this, the first thing it is is a common module for mounting small hardware.
+</TextSlab>
 
-{/* === Cover hero — bench photo with title slab === */}
+<ImageOverlay image="/media/danger-lab/cad-stackup.png" alt="CAD render of the Danger Lab module stack" align="lower-left" loading="lazy">
+  The Module
+</ImageOverlay>
 
-<Scene
-  pattern="cover"
-  image={img.bench}
-  alt="A disorganized lab bench covered in devkits"
-  loading="eager"
->
-  <TitleSlab title="Danger<br/>Lab" meta="/projects/danger-lab · 01" />
-</Scene>
+<TextSlab variant="body" align="center">
+  The base module is a 6mm thick 30.5 cm x 30.5 cm (1/4" thick, 12" x 12") expanded PVC sheet with five (5), 4mm holes located per Figure 1. These sheets are easy to find on Amazon or places like [TAP plastics](https://www.tapplastics.com/product/plastics/cut_to_size_plastic/foamed_pvc_sheets/342). Expanded PVC is a great middle ground between the rigidity of high-strength materials like polycarbonate and the workability of materials like foam core poster board. You can drill it precisely when being careful but also just punch a hole with a screw driver when in a rush. Likewise, it can be cut with a saw or knife and, unlike Aluminum, it's not conductive so any FOD is benign.
+</TextSlab>
 
-{/* === Reveal: premise slab over CAD render === */}
-
-<Scene pattern="reveal" image={img.cad} alt="CAD render of the Danger Lab module stack">
-  <TextSlab label="// premise">
-    <p class="display">
-      How much of your debug time has been spent on a <em>loose wire</em>?
-    </p>
-  </TextSlab>
-</Scene>
-
-{/* === Cover: hero render with spec slab === */}
-
-<Scene pattern="cover" image={img.hero} alt="Hero render of the assembled Danger Lab module">
-  <TextSlab label="// the spec">
-    <p class="display">
-      <code>6 mm × 30.5 cm × 30.5 cm.</code>
-      <br />
-      Five 4 mm holes.
-    </p>
-  </TextSlab>
-</Scene>
-
-{/* === Reveal: material slab over detail photo === */}
-
-<Scene pattern="reveal" image={img.module} alt="A finished Danger Lab module on the bench">
-  <TextSlab label="// material">
-    <p class="display">
-      PVC. Rigid, workable, <em>doesn't conduct</em>.
-    </p>
-  </TextSlab>
-</Scene>
-
-{/* === Plain bleed image — clean rest between scene runs === */}
-
-<Bleed src={img.prusa} alt="Prusa Connect web shortcut on iOS" />
+<ImageOverlay image="/media/danger-lab/prusa-connect.png" alt="Prusa Connect web shortcut on iOS" align="center" loading="lazy">
+  More details available on [Printables](https://www.printables.com/model/1282623-dangerlab)
+</ImageOverlay>

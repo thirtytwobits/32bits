@@ -206,7 +206,9 @@ holds state the repo doesn't see. Follows from R5 and R6.
 Things that are _not_ part of this design, listed so they can be cited when
 proposals try to sneak them in:
 
-- A drag-and-drop visual page editor.
+- ~~A drag-and-drop visual page editor.~~ Reversed 2026-05-07: Keystatic
+  CMS is now installed (dev-only admin at `/keystatic`) after MDX-only
+  authoring proved too friction-heavy. See change log.
 - Site-wide navigation menu, search, breadcrumbs, or category taxonomy.
 - A third level of zoom (sub-pages within a project, project galleries
   separate from the project page itself, etc.). Levels are exactly Home and
@@ -390,3 +392,13 @@ Tracked here so they don't get lost. Answer in place and date the answer.
   (`src/components/slabs/`, `src/components/smear/`, `BaseLayout`,
   `ProjectLayout`, `BrandMark`, `Footer`, `PrevNext`, `ScrollToTop`).
   `/design/option-*` mockups torn down — history in git.
+- **2026-05-07** — **CMS pivot.** MDX-only authoring proved too
+  friction-heavy in practice — every iteration involved AI-as-translator
+  guessing structure that didn't match the owner's mental model.
+  Installed **Keystatic** (`@keystatic/astro`, `@keystatic/core`),
+  `local` storage mode, dev-only admin at `/keystatic`. Production
+  builds skip Keystatic entirely (`output: 'static'` for GitHub Pages
+  doesn't host SSR). Authoring workflow: `pnpm dev`, visit
+  `/keystatic`, edit content via the visual UI, files commit to
+  `src/content/projects/*.mdx` and `src/content/pages/*.mdx`. Block
+  editor for the Slabs/Smear primitives is the next chunk.

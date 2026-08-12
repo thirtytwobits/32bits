@@ -1,6 +1,5 @@
 ---
 title: 'Dragon Head'
-slug: 'dragon-head'
 order: 20
 hero:
   type: image
@@ -8,67 +7,56 @@ hero:
   alt: 'Hero render of the pan-tilt head assembly'
 summary: 'Pan-tilt head mechanism for the L3X-Z robot platform — designed for Alexander Aentinger of 107-systems.'
 template: smear
+draft: false
+hidden: false
 ---
 
-import SmearHero from '@components/smear/SmearHero.astro';
-import SmearTwoUp from '@components/smear/SmearTwoUp.astro';
-import SmearDisplay from '@components/smear/SmearDisplay.astro';
-import SmearCaption from '@components/smear/SmearCaption.astro';
-import Bleed from '@components/Bleed.astro';
-
-export const img = {
-  hero: '/media/dragon-head/hero.png',
-  orthoFront: '/media/dragon-head/ortho-front.png',
-  orthoTop: '/media/dragon-head/ortho-top.png',
-  detail: '/media/dragon-head/detail.png',
-  physical: '/media/dragon-head/physical.png',
-};
-
 <SmearHero
-  title="Dragon<br/>Head"
-  image={img.hero}
+  title="Dragon Head"
+  image="/media/dragon-head/hero.png"
   alt="Hero render of the pan-tilt head assembly"
-  meta="/projects/dragon-head · 02"
+  meta="/projects/dragon-head"
 />
 
 <SmearTwoUp
-  image={img.orthoFront}
+  image="/media/dragon-head/ortho-front.png"
   alt="Front orthographic view of the pan-tilt head"
   align="right"
   label="// the brief"
 >
-A pan-tilt head for [107-systems/l3xz-hw-pan-tilt-head](https://github.com/107-systems/l3xz-hw-pan-tilt-head),
-designed for [Alexander Aentinger](https://github.com/aentinger).
 
-The head sits on top of the L3X-Z platform and gives it eyes — two
-servos, a stack of 3D-printed structural parts, and the cable runs
-that have to survive the full sweep of motion without fouling.
+A pan-tilt head for [107-systems/l3xz-hw-pan-tilt-head](https://github.com/107-systems/l3xz-hw-pan-tilt-head), designed for [Alexander Aentinger](https://github.com/aentinger).
+
+The head sits on top of the L3X-Z platform and gives it eyes — two servos, a stack of 3D-printed structural parts, and the cable runs that have to survive the full sweep of motion without fouling.
 
 </SmearTwoUp>
 
-<Bleed src={img.orthoTop} alt="Top orthographic view showing the rotation envelope" />
+<Bleed
+  src="/media/dragon-head/ortho-top.png"
+  alt="Top orthographic view showing the rotation envelope"
+/>
 
 <SmearDisplay label="// motion studies">
-  <p>
-    iPhone slow-mo, full acceleration, <em>hard stop.</em>
-  </p>
+
+iPhone slow-mo, full acceleration, _hard stop._
+
 </SmearDisplay>
 
 <SmearTwoUp
-  image={img.physical}
+  image="/media/dragon-head/physical.png"
   alt="The 3D-printed assembly on the bench"
   align="left"
   label="// the test"
 >
-  A couple of cheap and dirty motion studies — the head actuating at full acceleration to a hard
-  stop, captured in slow-motion to evaluate how much and for how long the assembly oscillates. A
-  test of rigidity and damping rather than aesthetics.
+
+A couple of cheap and dirty motion studies — the head actuating at full acceleration to a hard stop, captured in slow-motion to evaluate how much and for how long the assembly oscillates. A test of rigidity and damping rather than aesthetics.
+
 </SmearTwoUp>
 
-<Bleed src={img.detail} alt="Close-up detail of the joint" />
+<Bleed src="/media/dragon-head/detail.png" alt="Close-up detail of the joint" />
 
 <SmearCaption label="// fig. 04 — joint detail">
-  <p>
-    The bit that has to <em>not</em> wobble.
-  </p>
+
+The bit that has to _not_ wobble.
+
 </SmearCaption>
