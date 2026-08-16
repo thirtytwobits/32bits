@@ -1,0 +1,35 @@
+---
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+
+const links = [
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/scott-dixon-4aa1a51/',
+    icon: faLinkedin,
+  },
+  {
+    label: 'GitHub',
+    href: 'https://github.com/thirtytwobits',
+    icon: faGithub,
+  },
+].map((link) => {
+  const [width, height, , , path] = link.icon.icon;
+  return {
+    ...link,
+    path: Array.isArray(path) ? path.join(' ') : path,
+    viewBox: `0 0 ${width} ${height}`,
+  };
+});
+---
+
+<nav class="social-links" aria-label="Social links">
+  {
+    links.map((link) => (
+      <a href={link.href} rel="me noopener noreferrer" target="_blank" aria-label={link.label} title={link.label}>
+        <svg aria-hidden="true" viewBox={link.viewBox}>
+          <path d={link.path} />
+        </svg>
+      </a>
+    ))
+  }
+</nav>

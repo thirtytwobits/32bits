@@ -220,6 +220,19 @@
   border: 0;
 }
 
+.prose .social-links {
+  margin-block-start: 1.5rem;
+}
+
+.prose .social-links a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.prose .social-links a:hover {
+  color: var(--color-text);
+}
+
 @media (max-width: 42rem) {
   .article-header h1 {
     font-size: var(--step-4);

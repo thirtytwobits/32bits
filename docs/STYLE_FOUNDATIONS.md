@@ -224,6 +224,7 @@ Initial navigation should stay flat:
 
 - Home
 - Writing
+- Making
 - About
 
 The page frame should be simple:

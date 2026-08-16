@@ -4,10 +4,15 @@ import ThemeToggle from './ThemeToggle.astro';
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/writing/', label: 'Writing' },
+  { href: '/making/', label: 'Making' },
   { href: '/about/', label: 'About' },
 ];
 
 const currentPath = Astro.url.pathname;
+const isCurrent = (href: string) => {
+  if (href === '/') return currentPath === href;
+  return currentPath.startsWith(href);
+};
 ---
 
 <header class="site-header page-shell">
@@ -17,7 +22,7 @@ const currentPath = Astro.url.pathname;
   <nav aria-label="Primary navigation">
     {
       navItems.map((item) => (
-        <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
+        <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
           {item.label}
         </a>
       ))

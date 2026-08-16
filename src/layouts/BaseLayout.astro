@@ -10,6 +10,7 @@ import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/600.css';
 import 'katex/dist/katex.min.css';
 import SiteHeader from '../components/SiteHeader.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 import '../styles/themes.css';
 import '../styles/global.css';
 import '../styles/prose.css';
@@ -83,7 +84,8 @@ const trademarkPreviewUrl = new URL('/icons/icon-512.png', Astro.site ?? Astro.u
       <slot />
     </main>
     <footer class="site-footer page-shell">
-      <p>© {new Date().getFullYear()} Scott Dixon. Serious work, no feed required.</p>
+      <p>© {new Date().getFullYear()} Scott Dixon</p>
+      <SocialLinks />
     </footer>
   </body>
 </html>

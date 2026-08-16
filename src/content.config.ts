@@ -16,4 +16,18 @@ const writing = defineCollection({
   }),
 });
 
-export const collections = { writing };
+const making = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/making' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    published: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    status: z.enum(['draft', 'published', 'revised']).default('draft'),
+    kind: z.enum(['dispatch', 'project', 'note']).default('dispatch'),
+    topics: z.array(z.string()).default([]),
+    lang: z.string().default('en'),
+  }),
+});
+
+export const collections = { writing, making };

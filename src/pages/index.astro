@@ -5,7 +5,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const writing = (await getCollection('writing', ({ data }) => data.status !== 'draft')).sort(
   (a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
 );
+const making = (await getCollection('making', ({ data }) => data.status !== 'draft')).sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
+);
 const featured = writing.slice(0, 3);
+const featuredMaking = making.slice(0, 3);
 ---
 
 <BaseLayout
@@ -45,6 +49,38 @@ const featured = writing.slice(0, 3);
         </ul>
       ) : (
         <p class="empty-note">Writing will appear here as pieces are published.</p>
+      )
+    }
+  </section>
+
+  <section class="section page-shell" aria-labelledby="latest-making">
+    <h2 id="latest-making">Making</h2>
+    {
+      featuredMaking.length > 0 ? (
+        <ul class="writing-list">
+          {featuredMaking.map((entry) => (
+            <li>
+              <a href={`/making/${entry.id}/`}>
+                <div class="metadata">
+                  <span>{entry.data.kind}</span>
+                  <span>
+                    {entry.data.published.toLocaleDateString(entry.data.lang, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                </div>
+                <h3>{entry.data.title}</h3>
+                <p>{entry.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty-note">
+          Dispatches about making, tools, artifacts, and the maker community will appear here.
+        </p>
       )
     }
   </section>

@@ -1,0 +1,23 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import MakingLayout from '../../layouts/MakingLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('making', ({ data }) => data.status !== 'draft');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'making'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<MakingLayout entry={entry}>
+  <Content />
+</MakingLayout>

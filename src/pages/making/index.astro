@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const making = (await getCollection('making', ({ data }) => data.status !== 'draft')).sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Making"
+  description="Dispatches about making, tools, artifacts, and the maker community from 32bits.io."
+>
+  <section class="hero page-shell">
+    <h1>Making</h1>
+    <p>
+      Dispatches about making and the maker community: tools, materials,
+      experiments, artifacts, shop notes, and projects that deserve more than a
+      caption.
+    </p>
+  </section>
+
+  <section class="section page-shell" aria-labelledby="all-making">
+    <h2 id="all-making">All Dispatches</h2>
+    {
+      making.length > 0 ? (
+        <ul class="writing-list">
+          {making.map((entry) => (
+            <li>
+              <a href={`/making/${entry.id}/`}>
+                <div class="metadata">
+                  <span>{entry.data.kind}</span>
+                  <span>
+                    {entry.data.published.toLocaleDateString(entry.data.lang, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                </div>
+                <h3>{entry.data.title}</h3>
+                <p>{entry.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty-note">Making dispatches will appear here as they are published.</p>
+      )
+    }
+  </section>
+</BaseLayout>
