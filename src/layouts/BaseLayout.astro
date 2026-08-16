@@ -87,5 +87,102 @@ const trademarkPreviewUrl = new URL('/icons/icon-512.png', Astro.site ?? Astro.u
       <p>© {new Date().getFullYear()} Scott Dixon</p>
       <SocialLinks />
     </footer>
+    <div class="image-lightbox" id="image-lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" tabindex="-1" hidden>
+      <button class="image-lightbox__close" type="button" data-lightbox-close aria-label="Close image viewer">
+        <span aria-hidden="true">×</span>
+      </button>
+      <figure class="image-lightbox__figure">
+        <img data-lightbox-image alt="" />
+        <figcaption data-lightbox-caption hidden></figcaption>
+      </figure>
+    </div>
+    <script>
+      (() => {
+        const lightbox = document.getElementById('image-lightbox');
+
+        if (!lightbox || lightbox.dataset.lightboxReady === 'true') {
+          return;
+        }
+
+        const image = lightbox.querySelector<HTMLImageElement>('[data-lightbox-image]');
+        const caption = lightbox.querySelector<HTMLElement>('[data-lightbox-caption]');
+        const closeButton = lightbox.querySelector<HTMLElement>('[data-lightbox-close]');
+        let previousFocus: HTMLElement | null = null;
+
+        if (!image || !caption) {
+          return;
+        }
+
+        const closeLightbox = () => {
+          if (lightbox.hidden) {
+            return;
+          }
+
+          lightbox.hidden = true;
+          document.documentElement.classList.remove('has-lightbox');
+          image.removeAttribute('src');
+
+          if (previousFocus?.isConnected) {
+            previousFocus.focus();
+          }
+
+          previousFocus = null;
+        };
+
+        document.addEventListener('click', (event) => {
+          const target = event.target;
+
+          if (!target || !('closest' in target)) {
+            return;
+          }
+
+          const targetElement = target as Element;
+          const trigger = targetElement.closest('[data-lightbox="image"]') as HTMLAnchorElement | null;
+
+          if (!trigger || trigger.tagName !== 'A') {
+            return;
+          }
+
+          event.preventDefault();
+          previousFocus =
+            document.activeElement && 'focus' in document.activeElement
+              ? (document.activeElement as HTMLElement)
+              : null;
+
+          image.src = trigger.href;
+          image.alt = trigger.getAttribute('data-lightbox-alt') ?? trigger.querySelector('img')?.alt ?? '';
+
+          const sourceCaption = trigger.closest('figure')?.querySelector('figcaption');
+          const captionHtml = sourceCaption?.innerHTML ?? trigger.getAttribute('data-lightbox-caption') ?? '';
+          caption.innerHTML = captionHtml;
+          caption.hidden = caption.textContent?.trim().length === 0;
+
+          document.documentElement.classList.add('has-lightbox');
+          lightbox.hidden = false;
+
+          if (closeButton) {
+            closeButton.focus();
+          } else {
+            lightbox.focus();
+          }
+        });
+
+        lightbox.addEventListener('click', (event) => {
+          if (event.target === lightbox) {
+            closeLightbox();
+          }
+        });
+
+        closeButton?.addEventListener('click', closeLightbox);
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && !lightbox.hidden) {
+            closeLightbox();
+          }
+        });
+
+        lightbox.dataset.lightboxReady = 'true';
+      })();
+    </script>
   </body>
 </html>

@@ -5,14 +5,34 @@ interface Props {
   caption?: string;
   credit?: string;
   width?: 'normal' | 'wide' | 'full';
+  lightbox?: boolean;
+  lightboxSrc?: string | { src: string };
 }
 
-const { src, alt, caption, credit, width = 'normal' } = Astro.props;
+const { src, alt, caption, credit, width = 'normal', lightbox = true, lightboxSrc } = Astro.props;
 const imageSrc = typeof src === 'string' ? src : src.src;
+const fullImageSrc =
+  typeof lightboxSrc === 'string' ? lightboxSrc : lightboxSrc ? lightboxSrc.src : imageSrc;
+const lightboxCaption = [caption, credit].filter(Boolean).join(' ');
 ---
 
 <figure class:list={['media-figure', `media-figure--${width}`]}>
-  <img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
+  {
+    lightbox ? (
+      <a
+        class="media-figure__lightbox-link"
+        href={fullImageSrc}
+        data-lightbox="image"
+        data-lightbox-alt={alt}
+        data-lightbox-caption={lightboxCaption}
+        aria-label={caption ? `Open image: ${caption}` : 'Open image'}
+      >
+        <img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
+      </a>
+    ) : (
+      <img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
+    )
+  }
   {
     (caption || credit) && (
       <figcaption>

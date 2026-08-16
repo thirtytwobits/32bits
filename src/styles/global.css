@@ -174,6 +174,75 @@ a {
   margin: 0;
 }
 
+.image-lightbox {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  overflow: auto;
+  background: color-mix(in srgb, #000000 78%, var(--color-bg));
+  color: var(--color-text);
+  backdrop-filter: blur(0.2rem);
+}
+
+.image-lightbox[hidden] {
+  display: none;
+}
+
+.image-lightbox__figure {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.image-lightbox__figure img {
+  max-width: min(calc(100vw - 2rem), 86rem);
+  max-height: calc(100dvh - 8rem);
+  border: 1px solid color-mix(in srgb, var(--color-rule) 65%, transparent);
+  background: #000000;
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 45%);
+  object-fit: contain;
+}
+
+.image-lightbox__figure figcaption {
+  max-width: min(100%, var(--wide-max));
+  color: color-mix(in srgb, var(--color-bg) 72%, white);
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+
+.image-lightbox__close {
+  position: fixed;
+  z-index: 1;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-bg) 78%, white);
+  cursor: pointer;
+}
+
+.image-lightbox__close:hover {
+  color: #ffffff;
+}
+
+.image-lightbox__close span {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.has-lightbox body {
+  overflow: hidden;
+}
+
 .social-links {
   display: flex;
   flex-wrap: wrap;
@@ -316,6 +385,15 @@ a {
 
   .hero p {
     font-size: var(--step-1);
+  }
+
+  .image-lightbox {
+    padding: 0.5rem;
+  }
+
+  .image-lightbox__figure img {
+    max-width: calc(100vw - 1rem);
+    max-height: calc(100dvh - 7rem);
   }
 }
 
