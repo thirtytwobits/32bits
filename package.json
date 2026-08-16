@@ -3,10 +3,37 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "32bits.io - TODO.",
+  "description": "32bits.io - writing and professional work by Scott Dixon.",
   "homepage": "https://32bits.io",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thirtytwobits/32bits.git"
+  },
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-remark": "^7.2.2",
+    "@astrojs/mdx": "^7.0.5",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/ibm-plex-mono": "^5.1.0",
+    "@fontsource/inter": "^5.1.0",
+    "@fontsource/source-serif-4": "^5.1.0",
+    "@lucide/astro": "^1.31.0",
+    "@sentry/astro": "^10.70.0",
+    "@spotlightjs/astro": "^3.2.6",
+    "astro": "^7.2.1",
+    "katex": "^0.16.11",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "typescript": "^5.6.0"
   }
 }

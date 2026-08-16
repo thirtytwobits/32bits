@@ -33,3 +33,4 @@ Thumbs.db
 
 # inventory snapshots from the legacy site (large, transient)
 _squarespace-snapshot/
+.nvmrc

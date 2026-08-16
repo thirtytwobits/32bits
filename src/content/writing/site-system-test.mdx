@@ -1,0 +1,77 @@
+---
+title: Site System Test
+description: A first writing entry that proves prose, figures, code, math, and talk embeds work in the new 32bits.io publishing stack.
+published: 2026-08-11
+status: published
+kind: note
+topics:
+  - publishing
+  - systems
+  - technical writing
+lang: en
+---
+
+import Figure from "../../components/Figure.astro";
+import YouTubeEmbed from "../../components/YouTubeEmbed.astro";
+import controlLoop from "../../assets/images/control-loop.svg";
+
+This is not a manifesto. It is a system test for the new site: a real content
+entry that exercises the surfaces needed for durable technical writing.
+
+The first design constraint is simple: the writing must be able to hold an
+argument without leaning on the surrounding interface. The page has to support
+technical depth, professional memory, and enough editorial structure to be
+cited later.
+
+## A Figure
+
+<Figure
+  src={controlLoop}
+  alt="A block diagram showing sensor input, estimation, control, actuation, and plant feedback."
+  caption="A simple control loop diagram used to verify figure layout and captions."
+  width="wide"
+/>
+
+Figures should carry evidence or clarify structure. They should not behave like
+portfolio tiles unless the piece itself is a case study that needs artifact
+images.
+
+## Code
+
+Code blocks should feel native to the document and keep copy-and-paste fidelity.
+
+```rust
+fn saturating_deadband(input: i16, threshold: i16) -> i16 {
+    if input.abs() < threshold {
+        0
+    } else {
+        input
+    }
+}
+```
+
+Inline code such as `u16::MAX` should sit naturally inside a sentence.
+
+## Mathematical Notation
+
+Inline math works: $e^{i\pi} + 1 = 0$.
+
+Display math works too:
+
+$$
+x_{k+1} = A x_k + B u_k
+$$
+
+Equations should be build-time rendered and readable in both light and dark
+themes.
+
+## Talk Embed
+
+<YouTubeEmbed
+  id="VIDEO_ID"
+  title="Placeholder talk embed for 32bits.io"
+  caption="A placeholder YouTube embed to verify responsive talk layout. Replace this ID with a real talk before publishing."
+/>
+
+The long-term pattern should pair embedded talks with enough surrounding text
+that the page remains useful even when a reader does not play the video.

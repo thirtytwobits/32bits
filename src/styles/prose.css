@@ -1,0 +1,254 @@
+.article {
+  padding-block: clamp(2rem, 6vw, 5rem);
+}
+
+.article-header {
+  max-width: var(--wide-max);
+  margin-block-end: clamp(2.5rem, 7vw, 5rem);
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.article-header h1 {
+  max-width: 14ch;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--step-5);
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.dek {
+  max-width: var(--prose-max);
+  margin: 1.25rem 0 0;
+  color: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: var(--step-2);
+  line-height: 1.52;
+}
+
+.article-meta,
+.topic-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0;
+  margin: 1.25rem 0 0;
+  color: var(--color-subtle);
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  list-style: none;
+}
+
+.article-meta > * + *::before,
+.topic-list li + li::before {
+  content: "/";
+  margin-inline-end: 0.6rem;
+  color: var(--color-rule);
+}
+
+.prose {
+  max-width: var(--prose-max);
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  line-height: 1.66;
+}
+
+.prose > * + * {
+  margin-block-start: 1.15em;
+}
+
+.prose :where(h1, h2, h3, h4) {
+  margin-block: 2.1em 0.65em;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  line-height: 1.38;
+}
+
+.prose h2 {
+  font-size: var(--step-2);
+}
+
+.prose h3 {
+  font-size: var(--step-1);
+}
+
+.prose p,
+.prose li {
+  color: var(--color-text);
+}
+
+.prose a {
+  color: var(--color-accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.prose a:hover {
+  color: var(--color-accent-strong);
+}
+
+.prose blockquote {
+  margin-inline: 0;
+  padding-inline-start: 1.25rem;
+  border-inline-start: 3px solid var(--color-rule);
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.prose :where(ul, ol) {
+  padding-inline-start: 1.35rem;
+}
+
+.prose :where(code, kbd) {
+  border: 1px solid var(--color-rule);
+  padding: 0.08rem 0.25rem;
+  background: var(--color-code-bg);
+  color: var(--color-code-text);
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+}
+
+.prose pre {
+  max-width: min(var(--wide-max), calc(100vw - (2 * var(--page-inline))));
+  overflow-x: auto;
+  border: 1px solid var(--color-rule);
+  padding: 1rem;
+  background: var(--color-code-bg) !important;
+  color: var(--color-code-text);
+  font-size: 0.9rem;
+  line-height: 1.58;
+}
+
+.prose pre code {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font-size: inherit;
+}
+
+.prose table {
+  display: block;
+  max-width: min(var(--wide-max), calc(100vw - (2 * var(--page-inline))));
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+}
+
+.prose th,
+.prose td {
+  border-block-end: 1px solid var(--color-rule);
+  padding: 0.55rem 0.75rem;
+  text-align: start;
+}
+
+.prose hr {
+  border: 0;
+  border-block-start: 1px solid var(--color-rule);
+  margin-block: 2.5rem;
+}
+
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.75rem;
+}
+
+.media-figure,
+.youtube-embed {
+  margin: 2rem 0;
+}
+
+.media-figure--wide,
+.youtube-embed {
+  width: min(var(--wide-max), calc(100vw - (2 * var(--page-inline))));
+  max-width: none;
+}
+
+.media-figure--full {
+  width: calc(100vw - (2 * var(--page-inline)));
+  max-width: none;
+}
+
+.media-figure img {
+  width: 100%;
+  border: 1px solid var(--color-rule);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.media-figure figcaption,
+.youtube-embed figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block-start: 0.65rem;
+  color: var(--color-muted);
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+
+.media-figure cite {
+  color: var(--color-subtle);
+  font-style: normal;
+}
+
+.youtube-embed__frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-rule);
+  background: #000000;
+  box-shadow: var(--shadow-soft);
+  aspect-ratio: 16 / 9;
+}
+
+.youtube-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 42rem) {
+  .article-header h1 {
+    font-size: var(--step-4);
+  }
+
+  .dek {
+    font-size: var(--step-1);
+  }
+
+  .prose {
+    font-size: var(--step-0);
+  }
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .theme-toggle,
+  .youtube-embed {
+    display: none;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .page-shell,
+  .prose {
+    max-width: none;
+  }
+}

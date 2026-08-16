@@ -1,0 +1,27 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/writing/', label: 'Writing' },
+  { href: '/about/', label: 'About' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="site-header page-shell">
+  <a class="site-mark" href="/" aria-label="32bits.io home">
+    <img class="site-mark__logo" src="/trademark/32.webp" alt="32 bits.io" width="348" height="346" />
+  </a>
+  <nav aria-label="Primary navigation">
+    {
+      navItems.map((item) => (
+        <a href={item.href} aria-current={currentPath === item.href ? 'page' : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <ThemeToggle />
+</header>

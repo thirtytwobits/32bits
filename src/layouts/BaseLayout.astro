@@ -1,0 +1,89 @@
+---
+import '@fontsource/source-serif-4/400.css';
+import '@fontsource/source-serif-4/400-italic.css';
+import '@fontsource/source-serif-4/600.css';
+import '@fontsource/source-serif-4/700.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import 'katex/dist/katex.min.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import '../styles/themes.css';
+import '../styles/global.css';
+import '../styles/prose.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogType?: 'website' | 'article';
+  lang?: string;
+}
+
+const {
+  title = '32bits.io',
+  description = 'Writing and professional work by Scott Dixon.',
+  canonical = Astro.url.pathname,
+  ogType = 'website',
+  lang = 'en',
+} = Astro.props;
+
+const siteTitle = title === '32bits.io' ? title : `${title} - 32bits.io`;
+const canonicalUrl = new URL(canonical, Astro.site ?? Astro.url).toString();
+const trademarkPreviewUrl = new URL('/icons/icon-512.png', Astro.site ?? Astro.url).toString();
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      (() => {
+        try {
+          const theme = localStorage.getItem('32bits-theme');
+          if (theme === 'light' || theme === 'dark') {
+            document.documentElement.dataset.theme = theme;
+          }
+        } catch {
+          /* localStorage can be unavailable in private contexts. */
+        }
+      })();
+    </script>
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title="32bits.io writing" href="/rss.xml" />
+    <meta name="application-name" content="32bits.io" />
+    <meta name="theme-color" content="#f7f6f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#171817" media="(prefers-color-scheme: dark)" />
+    <meta property="og:site_name" content="32bits.io" />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={trademarkPreviewUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="32bits.io faceted rock mark" />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <SiteHeader />
+    <main id="content">
+      <slot />
+    </main>
+    <footer class="site-footer page-shell">
+      <p>© {new Date().getFullYear()} Scott Dixon. Serious work, no feed required.</p>
+    </footer>
+  </body>
+</html>

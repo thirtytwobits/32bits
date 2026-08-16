@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const writing = (await getCollection('writing', ({ data }) => data.status !== 'draft')).sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
+);
+const featured = writing.slice(0, 3);
+---
+
+<BaseLayout
+  title="32bits.io"
+  description="Writing and professional work by Scott Dixon, focused on embedded systems, robotics, aerospace, automotive software, and durable engineering practice."
+>
+  <section class="hero page-shell">
+    <h1>Software.<br/>Defined.</h1>
+    <p>
+      Various thoughts, projects, and field notes from a software engineer decades in, and just getting started.
+    </p>
+  </section>
+
+  <section class="section page-shell" aria-labelledby="latest-writing">
+    <h2 id="latest-writing">Writing</h2>
+    {
+      featured.length > 0 ? (
+        <ul class="writing-list">
+          {featured.map((entry) => (
+            <li>
+              <a href={`/writing/${entry.id}/`}>
+                <div class="metadata">
+                  <span>{entry.data.kind}</span>
+                  <span>
+                    {entry.data.published.toLocaleDateString(entry.data.lang, {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                </div>
+                <h3>{entry.data.title}</h3>
+                <p>{entry.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty-note">Writing will appear here as pieces are published.</p>
+      )
+    }
+  </section>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+interface Props {
+  src: string | { src: string };
+  alt: string;
+  caption?: string;
+  credit?: string;
+  width?: 'normal' | 'wide' | 'full';
+}
+
+const { src, alt, caption, credit, width = 'normal' } = Astro.props;
+const imageSrc = typeof src === 'string' ? src : src.src;
+---
+
+<figure class:list={['media-figure', `media-figure--${width}`]}>
+  <img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
+  {
+    (caption || credit) && (
+      <figcaption>
+        {caption && <span>{caption}</span>}
+        {credit && <cite>{credit}</cite>}
+      </figcaption>
+    )
+  }
+</figure>

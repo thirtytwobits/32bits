@@ -1,0 +1,53 @@
+---
+import { Monitor, Moon, Sun } from '@lucide/astro';
+---
+
+<button class="theme-toggle" type="button" aria-label="Theme: system" title="Theme: system">
+  <Monitor class="theme-toggle__icon theme-toggle__icon--system" aria-hidden="true" size={17} stroke-width={1.75} />
+  <Sun class="theme-toggle__icon theme-toggle__icon--light" aria-hidden="true" size={17} stroke-width={1.75} />
+  <Moon class="theme-toggle__icon theme-toggle__icon--dark" aria-hidden="true" size={17} stroke-width={1.75} />
+</button>
+
+<script>
+  const storageKey = '32bits-theme';
+  const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+  const themes = ['system', 'light', 'dark'] as const;
+  type Theme = (typeof themes)[number];
+
+  const isTheme = (value: string | null): value is Theme => {
+    return value === 'system' || value === 'light' || value === 'dark';
+  };
+
+  const setButtonState = (theme: Theme) => {
+    if (!button) return;
+    button.dataset.theme = theme;
+    button.setAttribute('aria-label', `Theme: ${theme}`);
+    button.title = `Theme: ${theme}`;
+  };
+
+  const applyTheme = (theme: Theme) => {
+    if (theme === 'light' || theme === 'dark') {
+      document.documentElement.dataset.theme = theme;
+      localStorage.setItem(storageKey, theme);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem(storageKey);
+    }
+
+    setButtonState(theme);
+  };
+
+  if (button) {
+    const savedTheme = localStorage.getItem(storageKey);
+    const initialTheme = isTheme(savedTheme) && savedTheme !== 'system' ? savedTheme : 'system';
+    applyTheme(initialTheme);
+
+    button.addEventListener('click', () => {
+      const storedTheme = button.dataset.theme ?? null;
+      const currentTheme: Theme = isTheme(storedTheme) ? storedTheme : 'system';
+      const currentIndex = themes.indexOf(currentTheme);
+      const nextTheme = themes[(currentIndex + 1) % themes.length] ?? 'system';
+      applyTheme(nextTheme);
+    });
+  }
+</script>

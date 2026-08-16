@@ -10,3 +10,8 @@ change log at the bottom.
 
 ---
 
+## Active Design Documents
+
+- [Style Foundations](./STYLE_FOUNDATIONS.md) — typography, color modes, prose,
+  images, code, math, accessibility, and styling stack decisions for the
+  writing-first site.

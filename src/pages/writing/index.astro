@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const writing = (await getCollection('writing', ({ data }) => data.status !== 'draft')).sort(
+  (a, b) => b.data.published.valueOf() - a.data.published.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Writing"
+  description="Essays, working notes, talks, and technical reflections from 32bits.io."
+>
+  <section class="hero page-shell">
+    <h1>Writing</h1>
+    <p>
+      Essays and working material on embedded systems, robotics, software
+      architecture, durable engineering practice, and the long arc of technical
+      careers.
+    </p>
+  </section>
+
+  <section class="section page-shell" aria-labelledby="all-writing">
+    <h2 id="all-writing">All Published Work</h2>
+    <ul class="writing-list">
+      {
+        writing.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.id}/`}>
+              <div class="metadata">
+                <span>{entry.data.kind}</span>
+                <span>
+                  {entry.data.published.toLocaleDateString(entry.data.lang, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
+              </div>
+              <h3>{entry.data.title}</h3>
+              <p>{entry.data.description}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
