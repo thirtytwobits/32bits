@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { formatEditorialDate, requirePublishedDate } from '../lib/editorial-dates';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
@@ -7,12 +8,8 @@ interface Props {
 }
 
 const { entry } = Astro.props;
+const published = requirePublishedDate(entry);
 const updated = entry.data.updated;
-const dateFormatter = new Intl.DateTimeFormat(entry.data.lang, {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
 ---
 
 <BaseLayout
@@ -28,14 +25,12 @@ const dateFormatter = new Intl.DateTimeFormat(entry.data.lang, {
       <h1>{entry.data.title}</h1>
       <p class="dek">{entry.data.description}</p>
       <div class="article-meta" aria-label="Article metadata">
-        <time datetime={entry.data.published.toISOString()}>
-          {dateFormatter.format(entry.data.published)}
-        </time>
+        <time datetime={published}>{formatEditorialDate(published, entry.data.lang)}</time>
         {
           updated && (
             <>
               <span aria-hidden="true">Updated</span>
-              <time datetime={updated.toISOString()}>{dateFormatter.format(updated)}</time>
+              <time datetime={updated}>{formatEditorialDate(updated, entry.data.lang)}</time>
             </>
           )
         }

@@ -201,6 +201,7 @@ a {
   max-width: min(calc(100vw - 2rem), 86rem);
   max-height: calc(100dvh - 8rem);
   border: 1px solid color-mix(in srgb, var(--color-rule) 65%, transparent);
+  border-radius: 0.35rem;
   background: #000000;
   box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 45%);
   object-fit: contain;

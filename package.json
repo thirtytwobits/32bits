@@ -16,7 +16,11 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "new:writing": "node scripts/articles.mjs new writing",
+    "new:making": "node scripts/articles.mjs new making",
+    "publish": "node scripts/articles.mjs publish",
+    "article:check": "node scripts/articles.mjs check"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

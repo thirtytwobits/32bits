@@ -1,9 +1,10 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { isPublishedEntry } from '../../lib/editorial-dates';
 import WritingLayout from '../../layouts/WritingLayout.astro';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('writing', ({ data }) => data.status !== 'draft');
+  const entries = (await getCollection('writing')).filter(isPublishedEntry);
   return entries.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
