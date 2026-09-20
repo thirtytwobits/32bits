@@ -14,8 +14,8 @@ npm run new:making -- "Dispatch Title"
 Publish a draft when it is ready:
 
 ```bash
-npm run publish -- writing/article-title
-npm run publish -- making/dispatch-title
+npm run writing:publish -- article-title
+npm run making:publish -- dispatch-title
 ```
 
 Drafts use `status: draft` and do not need `published`. Publishing switches

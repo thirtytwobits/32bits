@@ -76,20 +76,20 @@ context.
 Create a writing draft:
 
 ```bash
-npm run new:writing -- "Article Title"
+npm run writing:new -- "Article Title"
 ```
 
 Create a making draft:
 
 ```bash
-npm run new:making -- "Dispatch Title"
+npm run making:new -- "Dispatch Title"
 ```
 
 Useful options:
 
 ```bash
-npm run new:writing -- "Article Title" --slug custom-slug --kind note
-npm run new:making -- "Dispatch Title" --slug custom-slug --kind project
+npm run writing:new -- "Article Title" --slug custom-slug --kind note
+npm run making:new -- "Dispatch Title" --slug custom-slug --kind project
 ```
 
 The scaffold creates the MDX file and a matching media directory under

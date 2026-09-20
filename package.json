@@ -14,12 +14,14 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:drafts": "SHOW_DRAFTS=true astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "new:writing": "node scripts/articles.mjs new writing",
-    "new:making": "node scripts/articles.mjs new making",
-    "publish": "node scripts/articles.mjs publish",
+    "writing:new": "node scripts/articles.mjs new writing",
+    "making:new": "node scripts/articles.mjs new making",
+    "writing:publish": "node scripts/articles.mjs publish writing",
+    "making:publish": "node scripts/articles.mjs publish making",
     "article:check": "node scripts/articles.mjs check"
   },
   "dependencies": {

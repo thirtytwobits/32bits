@@ -3,11 +3,11 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   comparePublishedNewestFirst,
-  formatEditorialDate,
-  isPublishedEntry,
+  entryDateLabel,
+  isVisibleEntry,
 } from '../../lib/editorial-dates';
 
-const making = (await getCollection('making')).filter(isPublishedEntry).sort(comparePublishedNewestFirst);
+const making = (await getCollection('making')).filter(isVisibleEntry).sort(comparePublishedNewestFirst);
 ---
 
 <BaseLayout
@@ -33,7 +33,7 @@ const making = (await getCollection('making')).filter(isPublishedEntry).sort(com
               <a href={`/making/${entry.id}/`}>
                 <div class="metadata">
                   <span>{entry.data.kind}</span>
-                  <span>{formatEditorialDate(entry.data.published, entry.data.lang)}</span>
+                  <span>{entryDateLabel(entry)}</span>
                 </div>
                 <h3>{entry.data.title}</h3>
                 <p>{entry.data.description}</p>

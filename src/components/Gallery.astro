@@ -1,0 +1,300 @@
+---
+export interface GalleryItem {
+  src: string | { src: string };
+  alt: string;
+  caption?: string;
+  credit?: string;
+  /** Larger source to show in the viewer; defaults to `src`. */
+  fullSrc?: string | { src: string };
+  /** Set for local video clips. Poster image comes from `src`. */
+  video?: boolean;
+  /** Explicit MIME type for a video item; inferred from the extension otherwise. */
+  type?: string;
+}
+
+interface Props {
+  items: GalleryItem[];
+  caption?: string;
+  credit?: string;
+  width?: 'normal' | 'wide' | 'full';
+  /** Items visible per screenful of the filmstrip. */
+  perView?: 1 | 2 | 3;
+  label?: string;
+}
+
+const {
+  items,
+  caption,
+  credit,
+  width = 'wide',
+  perView = 1,
+  label = 'Image gallery',
+} = Astro.props;
+
+const resolve = (value: string | { src: string } | undefined) =>
+  typeof value === 'string' ? value : value ? value.src : undefined;
+
+const videoType = (src: string) => {
+  const ext = src.split('?')[0]?.split('.').pop()?.toLowerCase();
+  if (ext === 'webm') return 'video/webm';
+  if (ext === 'ogv' || ext === 'ogg') return 'video/ogg';
+  return 'video/mp4';
+};
+
+const groupId = `gallery-${Math.random().toString(36).slice(2, 10)}`;
+
+const slides = items.map((item, index) => {
+  const src = resolve(item.src)!;
+  const full = resolve(item.fullSrc) ?? src;
+  const isVideo = item.video === true;
+
+  return {
+    index,
+    src,
+    full,
+    isVideo,
+    type: isVideo ? (item.type ?? videoType(full)) : undefined,
+    alt: item.alt,
+    caption: [item.caption, item.credit].filter(Boolean).join(' '),
+  };
+});
+---
+
+<figure
+  class:list={['media-gallery', `media-figure--${width}`, `media-gallery--per-${perView}`]}
+  role="group"
+  aria-roledescription="carousel"
+  aria-label={label}
+>
+  <div class="media-gallery__viewport">
+    <button
+      class="media-gallery__page media-gallery__page--prev"
+      type="button"
+      data-gallery-page="-1"
+      aria-label="Scroll to previous item"
+      hidden
+    >
+      <span aria-hidden="true">‹</span>
+    </button>
+
+    <ul class="media-gallery__track" data-gallery-track>
+      {
+        slides.map((slide) => (
+          <li class="media-gallery__slide">
+            <a
+              class="media-gallery__link"
+              href={slide.full}
+              data-lightbox="image"
+              data-lightbox-group={groupId}
+              data-lightbox-index={slide.index}
+              data-lightbox-alt={slide.alt}
+              data-lightbox-caption={slide.caption}
+              data-lightbox-type={slide.isVideo ? 'video' : 'image'}
+              data-lightbox-mime={slide.type}
+              data-lightbox-poster={slide.isVideo ? slide.src : undefined}
+              aria-label={
+                slide.caption
+                  ? `Open ${slide.isVideo ? 'video' : 'image'}: ${slide.caption}`
+                  : `Open ${slide.isVideo ? 'video' : 'image'} ${slide.index + 1} of ${slides.length}`
+              }
+            >
+              {slide.isVideo ? (
+                <video
+                  src={slide.full}
+                  poster={slide.src}
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-label={slide.alt}
+                  data-gallery-video
+                />
+              ) : (
+                <img src={slide.src} alt={slide.alt} loading="lazy" decoding="async" />
+              )}
+              {slide.isVideo && (
+                <span class="media-gallery__badge" aria-hidden="true">
+                  ▶
+                </span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <button
+      class="media-gallery__page media-gallery__page--next"
+      type="button"
+      data-gallery-page="1"
+      aria-label="Scroll to next item"
+      hidden
+    >
+      <span aria-hidden="true">›</span>
+    </button>
+  </div>
+
+  <ol class="media-gallery__dots" data-gallery-dots aria-label={`${label} position`} hidden>
+    {
+      slides.map((slide) => (
+        <li>
+          <button
+            class="media-gallery__dot"
+            type="button"
+            data-gallery-dot={slide.index}
+            aria-label={`Go to item ${slide.index + 1} of ${slides.length}`}
+          />
+        </li>
+      ))
+    }
+  </ol>
+
+  {
+    (caption || credit) && (
+      <figcaption>
+        {caption && <span>{caption}</span>}
+        {credit && <cite>{credit}</cite>}
+      </figcaption>
+    )
+  }
+</figure>
+
+<script>
+  (() => {
+    const setup = (gallery: HTMLElement) => {
+      if (gallery.dataset.galleryReady === 'true') {
+        return;
+      }
+
+      const track = gallery.querySelector<HTMLElement>('[data-gallery-track]');
+      const dots = gallery.querySelector<HTMLElement>('[data-gallery-dots]');
+
+      if (!track) {
+        return;
+      }
+
+      const slides = Array.from(track.children) as HTMLElement[];
+      const pagers = Array.from(
+        gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-page]')
+      );
+      const dotButtons = Array.from(
+        gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-dot]')
+      );
+
+      if (slides.length > 1) {
+        pagers.forEach((button) => {
+          button.hidden = false;
+        });
+
+        if (dots) {
+          dots.hidden = false;
+        }
+      }
+
+      const currentIndex = () => {
+        const center = track.scrollLeft + track.clientWidth / 2;
+        let closest = 0;
+        let smallest = Number.POSITIVE_INFINITY;
+
+        slides.forEach((slide, index) => {
+          const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+          const distance = Math.abs(slideCenter - center);
+
+          if (distance < smallest) {
+            smallest = distance;
+            closest = index;
+          }
+        });
+
+        return closest;
+      };
+
+      const scrollToIndex = (index: number) => {
+        const clamped = Math.max(0, Math.min(slides.length - 1, index));
+        const slide = slides[clamped];
+
+        if (slide) {
+          track.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+        }
+      };
+
+      const sync = () => {
+        const index = currentIndex();
+        const atStart = track.scrollLeft <= 1;
+        const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+
+        dotButtons.forEach((dot, dotIndex) => {
+          const active = dotIndex === index;
+          dot.classList.toggle('is-active', active);
+          dot.setAttribute('aria-current', active ? 'true' : 'false');
+        });
+
+        pagers.forEach((button) => {
+          const step = Number(button.dataset.galleryPage);
+          button.disabled = step < 0 ? atStart : atEnd;
+        });
+      };
+
+      pagers.forEach((button) => {
+        button.addEventListener('click', () => {
+          scrollToIndex(currentIndex() + Number(button.dataset.galleryPage));
+        });
+      });
+
+      dotButtons.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          scrollToIndex(Number(dot.dataset.galleryDot));
+        });
+      });
+
+      track.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+          return;
+        }
+
+        event.preventDefault();
+        scrollToIndex(currentIndex() + (event.key === 'ArrowRight' ? 1 : -1));
+      });
+
+      let frame = 0;
+      track.addEventListener(
+        'scroll',
+        () => {
+          if (frame) {
+            return;
+          }
+
+          frame = requestAnimationFrame(() => {
+            frame = 0;
+            sync();
+          });
+        },
+        { passive: true }
+      );
+
+      // Preview inline videos on hover, but never when the viewer is open.
+      gallery.querySelectorAll<HTMLVideoElement>('[data-gallery-video]').forEach((video) => {
+        const play = () => {
+          if (!document.documentElement.classList.contains('has-lightbox')) {
+            void video.play().catch(() => {});
+          }
+        };
+
+        const stop = () => {
+          video.pause();
+          video.currentTime = 0;
+        };
+
+        video.closest('a')?.addEventListener('mouseenter', play);
+        video.closest('a')?.addEventListener('mouseleave', stop);
+        video.closest('a')?.addEventListener('focus', play);
+        video.closest('a')?.addEventListener('blur', stop);
+      });
+
+      sync();
+      gallery.dataset.galleryReady = 'true';
+    };
+
+    document.querySelectorAll<HTMLElement>('.media-gallery').forEach(setup);
+  })();
+</script>

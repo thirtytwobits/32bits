@@ -19,9 +19,10 @@ const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
 
 const usage = () => {
   console.error(`Usage:
-  npm run new:writing -- "Article Title" [--slug slug] [--kind essay|paper|case-study|note|talk] [--dry-run]
-  npm run new:making -- "Article Title" [--slug slug] [--kind dispatch|project|note] [--dry-run]
-  npm run publish -- writing/article-slug [--date YYYY-MM-DD] [--no-check] [--dry-run]
+  npm run writing:new -- "Article Title" [--slug slug] [--kind essay|paper|case-study|note|talk] [--dry-run]
+  npm run making:new -- "Article Title" [--slug slug] [--kind dispatch|project|note] [--dry-run]
+  npm run writing:publish -- article-slug [--date YYYY-MM-DD] [--no-check] [--dry-run]
+  npm run making:publish -- article-slug [--date YYYY-MM-DD] [--no-check] [--dry-run]
   npm run article:check`);
 };
 
@@ -173,33 +174,6 @@ const articlePath = (collectionName, slug) => {
   return resolve(ROOT, collection.contentDir, `${slug}.mdx`);
 };
 
-const resolveTarget = (target) => {
-  const normalized = target.replace(/\\/g, '/').replace(/\.mdx?$/, '');
-  const parts = normalized.split('/').filter(Boolean);
-
-  if (parts[0] === 'src' && parts[1] === 'content') {
-    return articlePath(parts[2], parts.at(-1));
-  }
-
-  if (COLLECTIONS[parts[0]]) {
-    return articlePath(parts[0], parts.slice(1).join('/'));
-  }
-
-  const matches = Object.keys(COLLECTIONS)
-    .map((collectionName) => articlePath(collectionName, normalized))
-    .filter(existsSync);
-
-  if (matches.length === 1) {
-    return matches[0];
-  }
-
-  if (matches.length > 1) {
-    throw new Error(`"${target}" exists in more than one collection. Use writing/${target} or making/${target}.`);
-  }
-
-  throw new Error(`Could not find article "${target}". Use writing/slug or making/slug.`);
-};
-
 const checkArticle = ({ body, filePath, lines, publishing = false }) => {
   const status = readScalar(lines, 'status') ?? 'draft';
   const published = readScalar(lines, 'published');
@@ -266,7 +240,8 @@ title: ${yamlString(title)}
 description: TODO
 status: draft
 kind: ${kind}
-topics: []
+topics:
+  - ${collectionName}
 lang: en
 ---
 
@@ -296,15 +271,26 @@ Start here.
   console.log(`Created ${filePath}`);
 };
 
-const publishArticle = (args) => {
-  const { options, positionals } = parseArgs(args);
-  const target = positionals[0];
+const publishArticle = (collectionName, args) => {
+  const collection = COLLECTIONS[collectionName];
 
-  if (!target) {
-    throw new Error('Publish needs an article target, for example writing/article-slug.');
+  if (!collection) {
+    throw new Error(`Unknown collection "${collectionName}". Use writing or making.`);
   }
 
-  const filePath = resolveTarget(target);
+  const { options, positionals } = parseArgs(args);
+  const slug = positionals[0];
+
+  if (!slug) {
+    throw new Error('Publish needs an article slug, for example article-slug.');
+  }
+
+  const filePath = articlePath(collectionName, slug);
+
+  if (!existsSync(filePath)) {
+    throw new Error(`Could not find ${filePath}.`);
+  }
+
   const source = readFileSync(filePath, 'utf8');
   const { body, lines } = parseFrontmatter(source, filePath);
   const status = readScalar(lines, 'status') ?? 'draft';
@@ -373,7 +359,7 @@ try {
   if (command === 'new') {
     newArticle(collectionOrTarget, rest);
   } else if (command === 'publish') {
-    publishArticle([collectionOrTarget, ...rest].filter(Boolean));
+    publishArticle(collectionOrTarget, rest);
   } else if (command === 'check') {
     checkPublishedArticles();
   } else {

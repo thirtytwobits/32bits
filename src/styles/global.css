@@ -197,7 +197,8 @@ a {
   margin: 0;
 }
 
-.image-lightbox__figure img {
+.image-lightbox__figure img,
+.image-lightbox__figure video {
   max-width: min(calc(100vw - 2rem), 86rem);
   max-height: calc(100dvh - 8rem);
   border: 1px solid color-mix(in srgb, var(--color-rule) 65%, transparent);
@@ -207,12 +208,82 @@ a {
   object-fit: contain;
 }
 
+.image-lightbox__figure img[hidden],
+.image-lightbox__figure video[hidden] {
+  display: none;
+}
+
+/* Full width so the counter tracks the media's right edge; the caption text
+   itself is what gets held to a readable measure. */
 .image-lightbox__figure figcaption {
-  max-width: min(100%, var(--wide-max));
+  max-width: 100%;
   color: color-mix(in srgb, var(--color-bg) 72%, white);
   font-family: var(--font-ui);
   font-size: var(--step--1);
   line-height: 1.45;
+}
+
+.image-lightbox__caption {
+  max-width: var(--wide-max);
+}
+
+.image-lightbox__caption[hidden] {
+  display: none;
+}
+
+.image-lightbox__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.image-lightbox__meta[hidden] {
+  display: none;
+}
+
+.image-lightbox__counter {
+  flex: none;
+  margin-inline-start: auto;
+  color: color-mix(in srgb, var(--color-bg) 55%, white);
+  font-variant-numeric: tabular-nums;
+}
+
+.image-lightbox__step {
+  position: fixed;
+  z-index: 1;
+  inset-block-start: 50%;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background: color-mix(in srgb, #000000 45%, transparent);
+  color: color-mix(in srgb, var(--color-bg) 78%, white);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.image-lightbox__step[hidden] {
+  display: none;
+}
+
+.image-lightbox__step:hover {
+  color: #ffffff;
+}
+
+.image-lightbox__step--prev {
+  inset-inline-start: 0.75rem;
+}
+
+.image-lightbox__step--next {
+  inset-inline-end: 0.75rem;
 }
 
 .image-lightbox__close {
@@ -392,9 +463,15 @@ a {
     padding: 0.5rem;
   }
 
-  .image-lightbox__figure img {
+  .image-lightbox__figure img,
+  .image-lightbox__figure video {
     max-width: calc(100vw - 1rem);
     max-height: calc(100dvh - 7rem);
+  }
+
+  /* Swipe covers navigation at this width; the arrows would sit over the media. */
+  .image-lightbox__step {
+    display: none;
   }
 }
 

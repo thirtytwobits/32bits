@@ -25,15 +25,25 @@ export function isPublishedEntry<T extends EditorialEntry>(entry: T): entry is P
   return entry.data.status !== 'draft' && typeof entry.data.published === 'string';
 }
 
-export function requirePublishedDate(entry: EditorialEntry) {
-  if (!entry.data.published) {
-    throw new Error(`${entry.collection}/${entry.id} is not a draft and is missing a published date.`);
-  }
+const DRAFTS_VISIBLE = import.meta.env.DEV && import.meta.env.SHOW_DRAFTS === 'true';
 
-  return entry.data.published;
+export function isVisibleEntry<T extends EditorialEntry>(entry: T): boolean {
+  return DRAFTS_VISIBLE || isPublishedEntry(entry);
 }
 
-export function comparePublishedNewestFirst(a: PublishedEntry, b: PublishedEntry) {
+export function entryDateLabel(entry: EditorialEntry) {
+  return entry.data.published ? formatEditorialDate(entry.data.published, entry.data.lang) : 'Draft';
+}
+
+export function comparePublishedNewestFirst(a: EditorialEntry, b: EditorialEntry) {
+  if (!a.data.published) {
+    return b.data.published ? -1 : 0;
+  }
+
+  if (!b.data.published) {
+    return 1;
+  }
+
   return b.data.published.localeCompare(a.data.published);
 }
 

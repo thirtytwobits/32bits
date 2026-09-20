@@ -3,12 +3,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
   comparePublishedNewestFirst,
-  formatEditorialDate,
-  isPublishedEntry,
+  entryDateLabel,
+  isVisibleEntry,
 } from '../lib/editorial-dates';
 
-const writing = (await getCollection('writing')).filter(isPublishedEntry).sort(comparePublishedNewestFirst);
-const making = (await getCollection('making')).filter(isPublishedEntry).sort(comparePublishedNewestFirst);
+const writing = (await getCollection('writing')).filter(isVisibleEntry).sort(comparePublishedNewestFirst);
+const making = (await getCollection('making')).filter(isVisibleEntry).sort(comparePublishedNewestFirst);
 const featured = writing.slice(0, 3);
 const featuredMaking = making.slice(0, 3);
 ---
@@ -18,10 +18,8 @@ const featuredMaking = making.slice(0, 3);
   description="Writing and professional work by Scott Dixon, focused on embedded systems, robotics, aerospace, automotive software, and durable engineering practice."
 >
   <section class="hero page-shell">
-    <h1>Software.<br/>Defined.</h1>
-    <p>
-      Various thoughts, projects, and field notes from a software engineer decades in, and just getting started.
-    </p>
+    <h1>Software</h1>
+    <p>(that's still a thing, right?)</p>
   </section>
 
   <section class="section page-shell" aria-labelledby="latest-writing">
@@ -34,7 +32,7 @@ const featuredMaking = making.slice(0, 3);
               <a href={`/writing/${entry.id}/`}>
                 <div class="metadata">
                   <span>{entry.data.kind}</span>
-                  <span>{formatEditorialDate(entry.data.published, entry.data.lang)}</span>
+                  <span>{entryDateLabel(entry)}</span>
                 </div>
                 <h3>{entry.data.title}</h3>
                 <p>{entry.data.description}</p>
@@ -58,7 +56,7 @@ const featuredMaking = making.slice(0, 3);
               <a href={`/making/${entry.id}/`}>
                 <div class="metadata">
                   <span>{entry.data.kind}</span>
-                  <span>{formatEditorialDate(entry.data.published, entry.data.lang)}</span>
+                  <span>{entryDateLabel(entry)}</span>
                 </div>
                 <h3>{entry.data.title}</h3>
                 <p>{entry.data.description}</p>

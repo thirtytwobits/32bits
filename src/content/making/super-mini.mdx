@@ -1,0 +1,175 @@
+---
+title: "Super Mini"
+description: "Redesigned PRUSA Mini 3D FDM printer."
+status: draft
+kind: dispatch
+topics: []
+lang: en
+---
+
+import Figure from "../../components/Figure.astro";
+import Gallery from "../../components/Gallery.astro";
+import miniMess from "../../assets/images/super-mini/super-mini-mess.webp";
+
+import diagramAssembly0 from "../../assets/images/super-mini/diagram_assembly_0.webp";
+import diagramPrinthead0 from "../../assets/images/super-mini/diagram_printhead0.webp";
+import renderBaseplate0 from "../../assets/images/super-mini/render_baseplate0.webp";
+import renderCableSnake from "../../assets/images/super-mini/render_cable_snake.webp";
+import renderFootDetail0 from "../../assets/images/super-mini/render_foot_detail_0.webp";
+import renderFootDetail1 from "../../assets/images/super-mini/render_foot_detail1.webp";
+import renderPrinthead0 from "../../assets/images/super-mini/render_printhead0.webp";
+import renderRiserDetail0 from "../../assets/images/super-mini/render_riser_detail0.webp";
+import renderXaxis0 from "../../assets/images/super-mini/render_xaxis0.webp";
+import renderXaxis1 from "../../assets/images/super-mini/render_xaxis1.webp";
+import renderXzDetail0 from "../../assets/images/super-mini/render_xz_detail0.webp";
+import renderXzDetail1 from "../../assets/images/super-mini/render_xz_detail1.webp";
+import renderXzDetail2 from "../../assets/images/super-mini/render_xz_detail2.webp";
+import renderZtop0 from "../../assets/images/super-mini/render_ztop0.webp";
+import renderZtop1 from "../../assets/images/super-mini/render_ztop1.webp";
+import photoBuddyDetail0 from "../../assets/images/super-mini/photo_buddy_detail0.webp";
+import photoBuddyDetail1 from "../../assets/images/super-mini/photo_buddy_detail1.webp";
+import photoPrinting0 from "../../assets/images/super-mini/photo_printing0.webp";
+import photoPrinting1 from "../../assets/images/super-mini/photo_printing1.webp";
+import photoPrinting2 from "../../assets/images/super-mini/photo_printing2.webp";
+import photoPrinting3 from "../../assets/images/super-mini/photo_printing3.webp";
+import photoPrinting4 from "../../assets/images/super-mini/photo_printing4.webp";
+import photoXzAxis0 from "../../assets/images/super-mini/photo_xz_axis0.webp";
+import photoZaxis0 from "../../assets/images/super-mini/photo_zaxis0.webp";
+
+export const galleryItems = [
+  {
+    src: diagramAssembly0,
+    alt: "An isometric CAD assembly diagram of the full redesigned printer, showing the frame, Z-axis towers, X-axis gantry, heatbed, and control panel with alignment callouts.",
+    caption: "The full assembly, modeled out before a single part gets printed.",
+  },
+  {
+    src: diagramPrinthead0,
+    alt: "A front-view technical diagram of the E3D print head assembly showing the hotend, heatsink fins, drive gears, and idler bearings.",
+    caption: "The print head assembly, an E3D hotend on Prusa's stock extruder body.",
+  },
+  {
+    src: renderBaseplate0,
+    alt: "A CAD render of a mounting plate with two red rubber grommets, an orange cable channel, and a grid of mounting holes.",
+    caption: "The rear mounting plate, with cable pass-throughs and rubber grommets.",
+  },
+  {
+    src: renderCableSnake,
+    alt: "A CAD render close-up of the articulated cable drag chain attached to the X-axis carriage, running along the linear rail.",
+    caption: "The cable snake — a drag chain to keep wiring tidy as the X axis moves.",
+  },
+  {
+    src: renderFootDetail0,
+    alt: "A CAD render close-up of a corner bracket with two red rubber feet and an orange cable channel.",
+    caption: "A closer look at the rubber feet and cable channel molded into the base.",
+  },
+  {
+    src: renderFootDetail1,
+    alt: "A CAD render of the base corner bracket and rubber feet from a different angle, with the X-axis rail and belt visible above.",
+    caption: "Another angle on the foot and rail junction.",
+  },
+  {
+    src: renderPrinthead0,
+    alt: "A CAD render close-up of the E3D hotend, showing the heatsink, heatbreak collar, and belt-driven carriage.",
+    caption: "The E3D hotend at the heart of the new print head.",
+  },
+  {
+    src: renderRiserDetail0,
+    alt: "A CAD render of the riser bracket connecting the X-axis linear rail to the vertical frame extrusion via two parallel rods.",
+    caption: "The riser that lifts the X-axis rail off the frame extrusion.",
+  },
+  {
+    src: renderXaxis0,
+    alt: "A CAD render of the X-axis carriage assembly, showing the belt path, idler pulley, tensioning spring, and orange print-head mount.",
+    caption: "The X-axis carriage, with belt tensioner and idler pulley.",
+  },
+  {
+    src: renderXaxis1,
+    alt: "A head-on CAD render of the X-axis idler end, showing the toothed belt pulley, bearing, and red end cap.",
+    caption: "Looking straight into the X-axis idler pulley.",
+  },
+  {
+    src: renderXzDetail0,
+    alt: "A CAD render of the X-carriage-to-Z-rod joint, showing the smooth rods, lead screw, stepper motor, and drive belt.",
+    caption: "The X-carriage sliding on the Z-axis smooth rods and lead screw.",
+  },
+  {
+    src: renderXzDetail1,
+    alt: "A CAD render cross-section of the X/Z joint showing the lead screw, blue anti-backlash nut, and rod bushings, with a 5/8-18 UNF thread callout.",
+    caption: "Inside the X/Z joint: lead screw, anti-backlash nut, and rod bushings.",
+  },
+  {
+    src: renderXzDetail2,
+    alt: "A CAD render of the X-carriage assembly from another angle, showing the pivot links, stepper motor, and mounting bolts.",
+    caption: "The X-carriage pivot links and motor mount, from the back.",
+  },
+  {
+    src: renderZtop0,
+    alt: "A CAD render of the top Z-axis mount, showing the lead-screw bore, a flexible motor coupler, and surrounding mounting bolts.",
+    caption: "The top of the Z-axis tower, where the lead screw meets its coupler.",
+  },
+  {
+    src: renderZtop1,
+    alt: "A CAD render of the Z-axis top bracket from another angle, showing the orange coupler seated in its mounting slot.",
+    caption: "Another view of the Z-axis top bracket and coupler.",
+  },
+  {
+    src: photoBuddyDetail0,
+    alt: "A close-up photo of the Buddy mainboard, wiring, and print head assembly mounted above an orange electronics enclosure.",
+    caption: "The Buddy mainboard, tucked in behind the print head.",
+  },
+  {
+    src: photoBuddyDetail1,
+    alt: "A close-up photo of the printer's rear panel showing a power switch, USB and power ports set into the orange electronics enclosure.",
+    caption: "Power switch and ports on the back of the electronics box.",
+  },
+  {
+    src: photoXzAxis0,
+    alt: "A close-up photo of the X-axis carriage and Z-axis rod joint, showing smooth rods, a drive belt, and printed mounting brackets.",
+    caption: "Where the X and Z axes meet, mid-assembly.",
+  },
+  {
+    src: photoZaxis0,
+    alt: "A top-down photo of the Z-axis stepper motor, labeled 'Original Prusa Mini Z Axis,' mounted at the top of the frame extrusion.",
+    caption: "The Z-axis motor, stock Prusa hardware repurposed for the new frame.",
+  },
+  {
+    src: photoPrinting1,
+    alt: "A photo of the printer on a cluttered workbench with tools scattered around it and a hand-sketched drawing on the empty steel print sheet.",
+    caption: "Bench chaos during setup, complete with a doodle on the sheet.",
+  },
+  {
+    src: photoPrinting4,
+    alt: "A photo of the printer's LCD showing the Original Prusa MINI setup wizard welcome screen, with a camera lens in the foreground.",
+    caption: "Powering on for the first time to the stock Prusa MINI setup wizard.",
+  },
+  {
+    src: photoPrinting2,
+    alt: "A photo of the printer running its first-layer calibration wizard on the LCD, with bicycles visible in the garage background.",
+    caption: "Dialing in first-layer calibration with the Z-height wizard.",
+  },
+  {
+    src: photoPrinting3,
+    alt: "A close-up photo of the nozzle extruding the first orange skirt lines onto the textured steel sheet at the start of a print.",
+    caption: "First lines down at the start of a print.",
+  },
+  {
+    src: photoPrinting0,
+    alt: "A photo of the assembled printer mid-print, extruding an orange PETG bracket with the LCD showing 91% complete.",
+    caption: "Ninety-one percent through the first real print, an orange PETG bracket.",
+  },
+];
+
+<Figure
+  src={miniMess}
+  lightbox={false}
+  alt="A block diagram showing sensor input, estimation, control, actuation, and plant feedback."
+  caption="A simple control loop diagram used to verify figure layout and captions."
+  width="wide"
+/>
+
+<Gallery
+  items={galleryItems}
+  caption="Diagrams, CAD renders, and build photos from the Super Mini project."
+  label="Super Mini project gallery"
+  width="wide"
+/>
