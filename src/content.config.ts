@@ -58,6 +58,10 @@ const writing = defineCollection({
       kind: z.enum(['essay', 'paper', 'case-study', 'note', 'talk']).default('essay'),
       topics: z.array(z.string()).default([]),
       lang: z.string().default('en'),
+      /** Path (relative to the repo root) to a BibTeX/CSL-JSON file for this article's citations. */
+      bibliography: z.string().optional(),
+      /** CSL style id or path overriding the site default ('vancouver') for this article. */
+      csl: z.string().optional(),
     })
     .superRefine(requirePublicationDate),
 });
@@ -74,6 +78,10 @@ const making = defineCollection({
       kind: z.enum(['dispatch', 'project', 'note']).default('dispatch'),
       topics: z.array(z.string()).default([]),
       lang: z.string().default('en'),
+      /** Path (relative to the repo root) to a BibTeX/CSL-JSON file for this article's citations. */
+      bibliography: z.string().optional(),
+      /** CSL style id or path overriding the site default ('vancouver') for this article. */
+      csl: z.string().optional(),
     })
     .superRefine(requirePublicationDate),
 });

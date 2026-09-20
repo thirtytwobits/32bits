@@ -1,0 +1,14 @@
+---
+interface Props {
+  heading?: string;
+}
+
+const { heading = 'Abstract' } = Astro.props;
+---
+
+<section class="abstract" {...({ role: 'doc-abstract' } as any)} aria-label={heading}>
+  <p class="abstract__label">{heading}</p>
+  <div class="abstract__body">
+    <slot />
+  </div>
+</section>

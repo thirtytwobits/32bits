@@ -1,0 +1,13 @@
+---
+interface Props {
+  width?: 'wide' | 'full';
+}
+
+const { width = 'wide' } = Astro.props;
+---
+
+<div class:list={['two-column', `two-column--${width}`]}>
+  <div class="two-column__columns">
+    <slot />
+  </div>
+</div>

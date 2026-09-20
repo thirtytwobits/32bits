@@ -7,12 +7,91 @@ kind: note
 topics:
   - writing
 lang: en
+bibliography: src/content/writing/everybody-wrote-this-code.bib
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+import TwoColumn from "../../components/TwoColumn.astro";
+import Abstract from "../../components/Abstract.astro";
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<Abstract>
+Recent work establishes that coding agents can generate many implementations of a single specification cheaply, and that pooling them yields measurable reliability gains — gains that depend on the specification, the target language, and the generation regime, and that increase when diversity is forced [@ron2026nversionprogrammingcodingagents]. But the gains fall well short of what failure independence would predict: implementations generated from one specification fail on the same inputs far more often than independence allows, with the coincident failures concentrating in a small number of specification items [2606.20158]. Agents therefore inherit rather than escape the classical problem of correlated failure, and the reliability available from them is bounded by how well that correlation is managed.
+This work takes that bound seriously in a setting the existing results do not address. Reliability through redundancy requires diversity among the implementations themselves, sustained into deployment. Assurance through review requires diversity between the producer and whatever checks it — a condition on the verification apparatus, not on the number of implementations. We ask whether the verification practices ordinarily applied to agent-generated code satisfy that condition, find that the ones most relied upon do not, and show that a body of practice which never trusted the producer — DO-178C/ED-12C — supplies mechanisms that do.
+</Abstract>
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+## 1. Two worlds, one problem (600 words)
 
-Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.
+Open outside aviation. The recognizable failure: plausible code, passing tests, no one able to say which behaviors were specified and which were chosen. Name the industry's answer (SDD, spec-as-source, "review the AI's output") and state precisely what it lacks — a concept of who reviews, and why that matters.
+
+Scope statement, early and explicit: AI as a development means, not AI in the product. ED-324/ARP6983, learning assurance, EASA Levels 1–3 are a different subject.
+
+Roadmap paragraph stating the three beats. Readers must know a counterargument is coming or §2 reads as advocacy.
+
+## 2. The apparatus transfers (1,200 words)
+
+Deduction
+DO-178C as objectives-and-evidence: life-cycle-agnostic, producer-agnostic, no personnel competency objectives. Contrast EN 50128's role matrix and IEC 61508-1 §6 competency requirements — producer-agnosticism is a property, not an oversight.
+Role assignment: agent executes §5.3; Table A-5 unchanged.
+No qualification trigger: §12.2, DO-330 Criterion 1. Labor absorbed is irrelevant; only claimed credit triggers.
+Prior art: Rierson's "Joe." State the extension — deterministic narrow tool vs. stochastic general producer that adds information.
+Null result: Agentic coding is neither revolutionary nor disastrous for DO–178C. Given that it is sometimes one or both of those for many engineering organizations the null result in aviation tells us there are lessons to bring forward.
+3. The information-adding producer (900 words)
+Compiler vs. agent: semantics-preserving vs. semantics-creating. Every resolution of an underdetermined requirement is a design decision not traceable upward. DO-178C names these (derived requirements) and obligates feedback to safety assessment. Current tooling produces them continuously and records none.
+
+Ends by setting up the measurable claim. §4 tests it.
+4. Worked example (2,000 words + repo)
+Design in the section below. Reports two results: the decision-point count, and the correlation gap. The second is the headline.
+5. The obstacle: independence assumes uncorrelated error (2,000 words)
+
+The paper's centre. This section is new and it is why the paper is worth writing.
+
+What independence was actually for. DO-178C defines it as separation of responsibilities achieving objective evaluation — operationally, "a person other than the developer." That operational rule approximates a property it never states: that producer errors and verifier errors are drawn independently. With two humans in different roles the approximation is decent. The rule and the property have now come apart.
+This is a known negative result, not a conjecture. Knight & Leveson (1986): independently developed program versions failed on correlated inputs, because developers share training and find the same cases hard. N-version programming's founding assumption failed empirically. Eckhardt & Lee (1985) gives the theoretical model — variation in per-input difficulty produces correlation even under genuinely independent development. The LLM's difficulty function over the input space is shared by construction. Cite Leveson here deliberately: your aviation readers already accept her, and this reframes the paper's obstacle as an old result meeting a new producer rather than a novel worry.
+The correlation channels. Enumerate, worst first:
+Generation → test. An agent writing tests with the implementation in context produces a tautology detector. Total correlation. Currently the default in industry practice.
+Generation → agentic review. An agent reviewing agent output shares the prior that produced the error. Not a tool-qualification problem; an error-distribution problem.
+Run → run. Same model, fresh context. Divergence where the corpus is ambivalent; silence where it is opinionated.
+Model family → model family. Overlapping corpora, similar architectures, convergent post-training. Weaker correlation, non-zero.
+Corpus → human reviewer. The one nobody discusses. Every reviewer trained on the same idioms. A defensive null check that shouldn't exist reads as good practice to producer and verifier alike. Role separation does not touch this.
+"Everybody wrote this code," stated precisely. Correct the folk model: an LLM is not polling engineers and averaging; it is mode-seeking over text, conditioned on the prompt and reshaped by post-training no engineer contributed to. And the corpus is GitHub-weighted — general-purpose application code, dynamic allocation, exceptions, logging, defensive scaffolding, generality on spec. "Everybody" is a specific everybody, and their habits are close to the inverse of freestanding constrained embedded practice. Registered prediction: class-(b) unintended function will cluster on idioms ordinary in general-purpose code and forbidden in the target profile. §4 tests it. This explains why agents produce unintended function rather than merely counting it.
+When everybody equals nobody. Identical for the assurance argument — DO-178C tracks artifacts, not authorship, which is exactly why §2 works. Divergent for independence, where the question is error correlation and "everybody" is the dangerous case.
+The reframed invariant. Aviation's rule was different person. The property it approximated was uncorrelated error distribution. Under agentic coding, restate the requirement against the property, not the rule. This strengthens the producer-role framing of §2 rather than undermining it — it explains what independence was always for.
+6. Why aviation is accidentally well-defended (900 words)
+The pivot that makes the paper's lessons non-obvious.
+
+Aviation's verification apparatus is disproportionately mechanical: structural coverage tools, static analysis against a code standard, traceability checking, data and control coupling analysis, formal methods under DO-333. A coverage tool has no opinion about idiomatic C++. A MISRA checker has no prior. These verifiers are decorrelated from the producer by construction — not by policy, and not by anyone having anticipated LLMs.
+
+Outside aviation, verification is human review plus tests. Both correlate with the corpus. That, not any deficiency of rigour, is why the outside world's current defences fail against agent-generated code.
+
+Corollary that reorders §7: rank the transferable mechanisms by decorrelation power, not by cost. Constructive direction from Littlewood & Miller (1989) — forced diversity outperforms hoped-for independence. The Code Standard becomes an anti-corpus device: deliberately forbid the idioms the corpus favours, and you have forced diversity between producer and standard.
+7. Seven mechanisms (2,600 words — the payload)
+Regrouped. Decorrelating mechanisms first, because they are now the argument; hygiene mechanisms second.
+
+Group A — decorrelating (these are what actually defend you)
+
+Requirements-based tests only; never code-derived. Closes channel 1, the worst one. Free, and currently the most-violated rule in agentic practice.
+Mechanical verification carries the load. Coverage as a sufficiency check on requirements-based tests, never a target — with uncovered code triaged as dead, deactivated, or extraneous rather than chased. Static analysis to a fixed rule set. Goodhart, named. Cheap, and decorrelated by construction.
+The Code Standard as an anti-corpus device. Constrain the agent toward the target domain's idioms and away from the corpus's. Freestanding, no dynamic allocation, no exceptions, bounded loops, explicit fixed-point scaling. Reframes MISRA/AUTOSAR from bureaucratic hygiene into a correlation countermeasure. This is the argument that gets embedded practice taken seriously outside embedded.
+Decision records for derived requirements. The only defence against a blind spot you cannot see is making the decision visible at the point it is made. Most novel contribution; give it the most space. Includes the escalation obligation — a derived requirement that changes safety-relevant behaviour goes to hazard analysis, not to a code comment.
+Forced diversity where it's affordable. Cross-family generation, and a human-authored reference implementation for anything safety-relevant. State the cost honestly: this one is not free, and it is the only mechanism on the list that isn't.
+
+Group B — hygiene (necessary, not decorrelating)
+
+Baselines and transition criteria. What makes an exploratory spec loop legitimate rather than sloppy, plus the contamination invariant. SDD's "living spec" has no baseline concept, which is why spec drift is its standing complaint.
+Regeneration destroys change impact analysis. The evidenced argument against spec-as-source, from a direction its advocates haven't considered.
+
+For each: state in aviation terms, translate to a rule an unregulated team adopts tomorrow, give the honest cost. Five of seven are free or near-free — say so, since it's the strongest adoption argument available.
+
+8. What doesn't transfer (600 words)
+MC/DC and DAL A structural coverage. DER and SOI review machinery. Full data-item sets. Qualification economics. Explicit: not proposing DAL A for CRUD applications. A paper that recommends everything recommends nothing.
+9. Limits and threats to validity (500 words)
+Single domain, small LLR set, hand classification by an interested party, limited model families. And the one that must be stated plainly: the correlation argument predicts your own protocol undercounts. See below.
+10. Related work (500 words)
+Against arXiv:2606.22413 and the formal-methods cohort — same premise, opposite conclusion, because you decline the qualification framing. Against the SDD literature (Spec Kit, Kiro, Tessl, Thoughtworks' taxonomy) — no concept of independence, therefore no defence against correlation. Against Rierson — prior art, extended. Knight/Leveson, Eckhardt/Lee, Littlewood/Miller as the correlation lineage. EARS' aerospace provenance as evidence the convergence is already happening unconsciously.
+Appendix A
+Objective-by-objective mapping to Annex A Tables A-2, A-4, A-5, A-6, A-7, independence column verified cell by cell. What the aviation audience reads. Keeping it out of the body is what makes the paper readable for everyone else.
+Appendix B
+Full LLR set, classification data, protocol as pre-registered.
+
+Experiment Design
+The environment is not hermetic and cannot be. All identified contamination pathways bias toward agents reporting gaps and diverging from each other — that is, toward the null hypothesis — so the positive results reported here are conservative. The negative results (agent self-report rates in conditions B–D) are the ones contamination could inflate, and are supported by canary controls and post-hoc awareness probes reported in full.
+

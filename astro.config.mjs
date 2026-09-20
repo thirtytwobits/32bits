@@ -2,6 +2,7 @@ import mdx from '@astrojs/mdx';
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
+import rehypeCitation from 'rehype-citation';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 
@@ -25,8 +26,26 @@ export default defineConfig({
   },
   markdown: {
     processor: unified({
+      // Explicit: rehype-citation's note-style citations depend on GFM footnotes,
+      // and this repo overrides Astro's default processor rather than extending it.
+      gfm: true,
       remarkPlugins: [remarkMath],
-      rehypePlugins: [rehypeKatex],
+      rehypePlugins: [
+        rehypeKatex,
+        // No global `bibliography` here on purpose: rehype-citation reads a
+        // `bibliography` (and optional `csl`) field from each MDX file's own
+        // frontmatter, so it stays a no-op on every article that doesn't set one.
+        [
+          rehypeCitation,
+          {
+            path: process.cwd(),
+            csl: 'vancouver',
+            linkCitations: true,
+            showTooltips: true,
+            inlineClass: ['citation'],
+          },
+        ],
+      ],
     }),
     shikiConfig: {
       themes: {

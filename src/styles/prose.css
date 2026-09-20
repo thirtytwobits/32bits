@@ -439,6 +439,150 @@
   color: var(--color-text);
 }
 
+.abstract {
+  max-width: var(--prose-max);
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--color-rule);
+  border-inline-start: 3px solid var(--color-accent);
+  background: var(--color-surface);
+}
+
+.abstract__label {
+  margin: 0 0 0.6rem;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.abstract__body {
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+}
+
+.abstract__body > * + * {
+  margin-block-start: 1em;
+}
+
+.two-column {
+  container-type: inline-size;
+  margin: 2rem 0;
+}
+
+.two-column--wide {
+  width: min(var(--wide-max), calc(100vw - (2 * var(--page-inline))));
+  max-width: none;
+}
+
+.two-column--full {
+  width: calc(100vw - (2 * var(--page-inline)));
+  max-width: none;
+}
+
+.two-column__columns {
+  column-count: 2;
+  column-gap: 3rem;
+  column-rule: 1px solid var(--color-rule);
+}
+
+.two-column__columns > * + * {
+  margin-block-start: 1.15em;
+}
+
+.two-column__columns :where(h2, h3, h4) {
+  margin-block-start: 0;
+  break-after: avoid;
+}
+
+.two-column__columns .media-figure,
+.two-column__columns .media-gallery,
+.two-column__columns .abstract,
+.two-column__columns pre,
+.two-column__columns table,
+.two-column__columns blockquote {
+  break-inside: avoid;
+  column-span: all;
+}
+
+@container (max-width: 42rem) {
+  .two-column__columns {
+    column-count: 1;
+  }
+}
+
+.prose .citation {
+  color: var(--color-accent);
+  text-decoration: none;
+  vertical-align: super;
+  font-size: 0.75em;
+}
+
+.prose .citation:hover {
+  color: var(--color-accent-strong);
+  text-decoration: underline;
+}
+
+.prose #refs.csl-bib-body {
+  max-width: var(--prose-max);
+  margin-block-start: 2.5rem;
+  padding-block-start: 1.5rem;
+  border-block-start: 1px solid var(--color-rule);
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.prose .csl-entry {
+  display: flex;
+  gap: 0.5em;
+}
+
+.prose .csl-entry + .csl-entry {
+  margin-block-start: 0.65em;
+}
+
+.prose .csl-left-margin {
+  flex: 0 0 auto;
+  color: var(--color-subtle);
+}
+
+.prose .csl-right-inline {
+  flex: 1 1 auto;
+}
+
+.prose [data-footnotes] {
+  max-width: var(--prose-max);
+  margin-block-start: 2.5rem;
+  padding-block-start: 1.5rem;
+  border-block-start: 1px solid var(--color-rule);
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  color: var(--color-muted);
+}
+
+.prose [data-footnotes] .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.prose [data-footnote-ref],
+.prose [data-footnote-backref] {
+  text-decoration: none;
+}
+
 @media (max-width: 42rem) {
   .media-gallery {
     /* Multi-up filmstrips are unreadable at phone width. */
@@ -479,6 +623,12 @@
   .page-shell,
   .prose {
     max-width: none;
+  }
+
+  .two-column,
+  .two-column__columns {
+    width: auto;
+    column-count: 1;
   }
 
   /* A scroll strip only prints its first frame; lay the set out flat instead. */

@@ -1,0 +1,135 @@
+---
+title: "Paper Format Demo"
+description: "A live, annotated reference for the Abstract, TwoColumn, and citation/footnote components."
+status: draft
+kind: paper
+topics: []
+lang: en
+bibliography: src/content/writing/paper-format-demo.bib
+---
+
+import Abstract from "../../components/Abstract.astro";
+import TwoColumn from "../../components/TwoColumn.astro";
+
+This draft is a working reference, not a real article — it stays out of the
+site because its `status` is `draft`. Visit it locally with
+`npm run dev:drafts` and open `/writing/paper-format-demo/`. Delete this file
+whenever you don't need the reference anymore; nothing else depends on it.
+
+## 1. `Abstract`
+
+Wrap a short summary paragraph in `<Abstract>`. It renders as a labeled,
+bordered callout right after the article header — the usual spot for a paper's
+abstract.
+
+```mdx
+import Abstract from "../../components/Abstract.astro";
+
+<Abstract>
+  A one- or two-sentence summary of the piece, rendered as a labeled callout.
+</Abstract>
+```
+
+Here it is, live:
+
+<Abstract>
+  Two-column layout and citation support turn any article into something
+  that reads like a paper, using the components documented on this page.
+</Abstract>
+
+Pass `heading="Summary"` (or anything else) if "Abstract" isn't the right label.
+
+## 2. `TwoColumn`
+
+Wrap a block of MDX content — headings, paragraphs, figures, whatever — in
+`<TwoColumn>`. Text flows newspaper-style across two columns on wide screens
+and collapses to one column automatically once the block gets too narrow to
+read comfortably (that's a CSS container query, not a viewport breakpoint, so
+it reacts to the component's own width).
+
+```mdx
+import TwoColumn from "../../components/TwoColumn.astro";
+
+<TwoColumn>
+
+## A heading
+
+Body text here flows across both columns automatically. Wide media —
+`<Figure width="wide">`, `<Gallery>` — automatically spans both columns
+instead of getting squeezed into one.
+
+</TwoColumn>
+```
+
+**Important:** leave a blank line right after `<TwoColumn>` and right before
+`</TwoColumn>`. Without it, the MDX compiler treats the inner content as
+plain children of the tag instead of parsing it as markdown, and headings /
+paragraphs / citations inside won't render correctly.
+
+Pass `width="full"` instead of the default `"wide"` if you want it to use the
+full page width rather than the site's standard wide-content width.
+
+Here it is, live — resize the window to see it collapse to one column:
+
+<TwoColumn>
+
+### Live two-column block
+
+This paragraph, and the ones after it, are flowing across two columns on a
+wide screen. The column count is controlled by the width of this box, not
+the width of your browser window, so nesting this inside something narrower
+would collapse it sooner.
+
+Citations still work in here — see, for instance, how communication theory
+gave a precise, quantitative account of information [@shannon1948].
+
+Headings avoid breaking across the column boundary, and wide media (a
+`<Figure width="wide">` or `<Gallery>`) would span both columns automatically
+instead of getting squeezed into one.
+
+</TwoColumn>
+
+## 3. Citations
+
+Citations use Pandoc-style syntax directly in your prose: `[@citekey]` for a
+parenthetical citation, or `@citekey` on its own for an in-text one. Two
+things have to be true for this to work:
+
+1. Your article's frontmatter needs a `bibliography` field pointing at a
+   `.bib` (or CSL-JSON) file, with a path relative to the repo root:
+
+   ```yaml
+   bibliography: src/content/writing/my-article.bib
+   ```
+
+2. That file needs an entry with a matching key, e.g. a BibTeX entry
+   `@article{nash1950, ... }` for the key `nash1950`.
+
+Articles that don't set `bibliography` are completely unaffected — the
+citation plugin only runs when that field is present.
+
+Example, live: game theory formalizes strategic interaction between rational
+agents [@nash1950], and around the same time information theory gave a
+precise account of communication [@shannon1948].
+
+That renders as numbered, hyperlinked citations (`(1)`, `(2)`) with a hover
+tooltip showing the full reference, and it automatically generates a
+"References" list at the bottom of the article — scroll down to see it.
+
+The citation style defaults to `vancouver` (numeric) site-wide. Override it
+per article with a `csl` frontmatter field, e.g. `csl: apa` for author-date
+style instead.
+
+## 4. Footnotes
+
+Plain GFM footnotes work anywhere, with no frontmatter and no new syntax —
+they were already supported before any of this[^example]. Use them for
+asides that aren't references.
+
+```md
+A sentence needing an aside.[^note]
+
+[^note]: The aside itself, rendered at the bottom of the article.
+```
+
+[^example]: This is a real footnote, unrelated to the citation system above — notice it's a separate list from the References.
