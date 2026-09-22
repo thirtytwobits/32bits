@@ -1,0 +1,124 @@
+---
+/**
+ * A/B image comparison: two images stacked behind a draggable wiper.
+ *
+ * Wraps `img-comparison-slider` (MIT, https://github.com/sneas/img-comparison-slider),
+ * a dependency-free custom element. It upgrades itself on load, so no client
+ * directive is needed; without JavaScript the figure falls back to `first`.
+ */
+type ImageSource = string | { src: string; width?: number; height?: number };
+
+interface Props {
+  first: ImageSource;
+  second: ImageSource;
+  firstAlt: string;
+  secondAlt: string;
+  /** Corner chips naming each side. Omit both for a clean frame. */
+  firstLabel?: string;
+  secondLabel?: string;
+  caption?: string;
+  credit?: string;
+  width?: 'normal' | 'wide' | 'full';
+  /** Where the wiper starts, in percent. */
+  value?: number;
+  direction?: 'horizontal' | 'vertical';
+  /** Follow the pointer instead of waiting for a drag. */
+  hover?: boolean;
+  label?: string;
+}
+
+const {
+  first,
+  second,
+  firstAlt,
+  secondAlt,
+  firstLabel,
+  secondLabel,
+  caption,
+  credit,
+  width = 'normal',
+  value = 50,
+  direction = 'horizontal',
+  hover = false,
+  label = 'Image comparison slider',
+} = Astro.props;
+
+const resolve = (image: ImageSource) => (typeof image === 'string' ? { src: image } : image);
+
+const firstImage = resolve(first);
+const secondImage = resolve(second);
+---
+
+<figure class:list={['media-figure', 'media-compare', `media-figure--${width}`]}>
+  <div
+    class:list={[
+      'media-compare__frame',
+      direction === 'vertical' && 'media-compare__frame--vertical',
+    ]}
+  >
+    <img-comparison-slider
+      class="media-compare__slider"
+      value={value}
+      direction={direction}
+      hover={hover ? '' : undefined}
+      role="group"
+      aria-label={label}
+    >
+      <img
+        slot="first"
+        src={firstImage.src}
+        width={firstImage.width}
+        height={firstImage.height}
+        alt={firstAlt}
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        slot="second"
+        src={secondImage.src}
+        width={secondImage.width}
+        height={secondImage.height}
+        alt={secondAlt}
+        loading="lazy"
+        decoding="async"
+      />
+    </img-comparison-slider>
+
+    {
+      firstLabel && (
+        <span class="media-compare__label media-compare__label--first" aria-hidden="true">
+          {firstLabel}
+        </span>
+      )
+    }
+    {
+      secondLabel && (
+        <span class="media-compare__label media-compare__label--second" aria-hidden="true">
+          {secondLabel}
+        </span>
+      )
+    }
+  </div>
+
+  <noscript>
+    <style>
+      .media-compare__frame {
+        display: none;
+      }
+    </style>
+    <img src={firstImage.src} alt={firstAlt} decoding="async" />
+  </noscript>
+
+  {
+    (caption || credit) && (
+      <figcaption>
+        {caption && <span>{caption}</span>}
+        {credit && <cite>{credit}</cite>}
+      </figcaption>
+    )
+  }
+</figure>
+
+<script>
+  import 'img-comparison-slider';
+</script>

@@ -144,3 +144,37 @@ site paths:
 
 Figures are lightbox-enabled by default. Use `lightbox={false}` for images that
 should remain ordinary inline media.
+
+### Comparing two images
+
+`ImageCompare` stacks two images in one frame behind a wiper the reader drags,
+for A/B design options or before-and-after states:
+
+```mdx
+import ImageCompare from "../../components/ImageCompare.astro";
+
+<ImageCompare
+  first="/media/article-title/option-a.webp"
+  second="/media/article-title/option-b.webp"
+  firstAlt="A precise description of the first image."
+  secondAlt="A precise description of the second image."
+  firstLabel="Option A"
+  secondLabel="Option B"
+  caption="A caption that explains what the comparison shows."
+  width="wide"
+/>
+```
+
+Give both images the same dimensions. The frame is sized by `second`, and a
+`first` with a different aspect ratio is cropped to fit it.
+
+Other props: `value` (where the wiper starts, in percent, default `50`),
+`direction` (`horizontal` or `vertical`), `hover` (follow the pointer instead of
+waiting for a drag), `credit`, and `label` (the accessible name of the control).
+
+The component wraps [`img-comparison-slider`][ics], a dependency-free custom
+element that upgrades itself on load, so it needs no client directive. Unlike
+`Figure`, comparison figures are not lightbox-enabled; readers without
+JavaScript get `first` as a plain image.
+
+[ics]: https://github.com/sneas/img-comparison-slider

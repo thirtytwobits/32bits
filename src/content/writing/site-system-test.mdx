@@ -11,8 +11,10 @@ lang: en
 ---
 
 import Figure from "../../components/Figure.astro";
+import ImageCompare from "../../components/ImageCompare.astro";
 import YouTubeEmbed from "../../components/YouTubeEmbed.astro";
 import controlLoop from "../../assets/images/control-loop.svg";
+import controlLoopOpen from "../../assets/images/control-loop-open.svg";
 
 This is not a manifesto. It is a system test for the new site: a real content
 entry that exercises the surfaces needed for durable technical writing.
@@ -34,6 +36,28 @@ cited later.
 Figures should carry evidence or clarify structure. They should not behave like
 portfolio tiles unless the piece itself is a case study that needs artifact
 images.
+
+## An Image Comparison
+
+Two images that differ in one respect are easier to read as a wipe than as a
+pair. `ImageCompare` puts them in a single frame behind a divider the reader
+drags:
+
+<ImageCompare
+  first={controlLoopOpen}
+  second={controlLoop}
+  firstAlt="The same block diagram with no return path from the plant back to the sensor."
+  secondAlt="A block diagram showing sensor input, estimation, control, actuation, and plant feedback."
+  firstLabel="Open loop"
+  secondLabel="Closed loop"
+  caption="Drag the divider: the only difference between the two diagrams is the return path."
+  width="wide"
+/>
+
+Both images must share dimensions. The frame takes its size from `second`, so a
+`first` with a different aspect ratio gets cropped to fit. This suits A/B design
+options and before-and-after states; it is the wrong surface for two images that
+merely sit near each other, which is what `Gallery` is for.
 
 ## Code
 

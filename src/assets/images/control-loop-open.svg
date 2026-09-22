@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" role="img" aria-labelledby="title desc">
+  <title id="title">Open control loop diagram</title>
+  <desc id="desc">The same engineering diagram with the feedback path removed, showing sensor input, estimation, control, and actuation running open loop.</desc>
+  <rect width="960" height="480" fill="#f7f6f1"/>
+  <g fill="none" stroke="#245f73" stroke-width="3">
+    <rect x="70" y="175" width="150" height="92"/>
+    <rect x="295" y="175" width="150" height="92"/>
+    <rect x="520" y="175" width="150" height="92"/>
+    <rect x="745" y="175" width="150" height="92"/>
+    <path d="M220 221h75"/>
+    <path d="M445 221h75"/>
+    <path d="M670 221h75"/>
+  </g>
+  <g fill="#1c1b18" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" text-anchor="middle">
+    <text x="145" y="216">Sensor</text>
+    <text x="370" y="216">Estimate</text>
+    <text x="595" y="216">Control</text>
+    <text x="820" y="216">Plant</text>
+  </g>
+  <g fill="#67635c" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="16" text-anchor="middle">
+    <text x="145" y="243">y[k]</text>
+    <text x="370" y="243">x̂[k]</text>
+    <text x="595" y="243">u[k]</text>
+    <text x="820" y="243">x[k+1]</text>
+    <text x="482" y="384">open loop: the plant is never told what it got wrong</text>
+  </g>
+  <g fill="#245f73">
+    <path d="M292 221l-14-8v16z"/>
+    <path d="M517 221l-14-8v16z"/>
+    <path d="M742 221l-14-8v16z"/>
+  </g>
+</svg>

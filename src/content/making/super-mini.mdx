@@ -10,9 +10,11 @@ lang: en
 import Figure from "../../components/Figure.astro";
 import Gallery from "../../components/Gallery.astro";
 import miniMess from "../../assets/images/super-mini/super-mini-mess.webp";
+import ImageCompare from "../../components/ImageCompare.astro";
 
 import diagramAssembly0 from "../../assets/images/super-mini/diagram_assembly_0.webp";
-import diagramPrinthead0 from "../../assets/images/super-mini/diagram_printhead0.webp";
+import diagramPrinthead0 from "../../assets/images/super-mini/diagram_printheadv6.png";
+import diagramPrinthead1 from "../../assets/images/super-mini/diagram_printheadfh.png";
 import renderBaseplate0 from "../../assets/images/super-mini/render_baseplate0.webp";
 import renderCableSnake from "../../assets/images/super-mini/render_cable_snake.webp";
 import renderFootDetail0 from "../../assets/images/super-mini/render_foot_detail_0.webp";
@@ -46,6 +48,11 @@ export const galleryItems = [
     src: diagramPrinthead0,
     alt: "A front-view technical diagram of the E3D print head assembly showing the hotend, heatsink fins, drive gears, and idler bearings.",
     caption: "The print head assembly, an E3D hotend on Prusa's stock extruder body.",
+  },
+  {
+    src: diagramPrinthead1,
+    alt: "A front-view technical diagram of the v6 print head assembly showing the hotend, heatsink fins, drive gears, and idler bearings.",
+    caption: "The print head assembly, a PRUSA v6 print head on Prusa's stock extruder body.",
   },
   {
     src: renderBaseplate0,
@@ -171,5 +178,16 @@ export const galleryItems = [
   items={galleryItems}
   caption="Diagrams, CAD renders, and build photos from the Super Mini project."
   label="Super Mini project gallery"
+  width="wide"
+/>
+
+<ImageCompare
+  first={diagramPrinthead0}
+  second={diagramPrinthead1}
+  firstAlt="The v6 printhead and print fan nozzle with the fan rotated to allow for a third bar."
+  secondAlt="The head mixing the E3D Revo™ hotend with the PRUSA MK3 print fan nozzle. Fan also rotated to accommodate the third bar."
+  firstLabel="V6"
+  secondLabel="Frankenhead"
+  caption="Two printheads for the three-bar gantry"
   width="wide"
 />
