@@ -6,6 +6,8 @@ import rehypeCitation from 'rehype-citation';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 
+import rehypeLinkifyBibliographyUrls from './src/lib/rehype-linkify-bibliography-urls.mjs';
+
 import sentry from '@sentry/astro';
 import spotlightjs from '@spotlightjs/astro';
 
@@ -45,6 +47,8 @@ export default defineConfig({
             inlineClass: ['citation'],
           },
         ],
+        // rehype-citation renders bibliography URLs as plain text; linkify them.
+        rehypeLinkifyBibliographyUrls,
       ],
     }),
     shikiConfig: {
