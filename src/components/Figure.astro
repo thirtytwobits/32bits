@@ -7,9 +7,21 @@ interface Props {
   width?: 'normal' | 'wide' | 'full';
   lightbox?: boolean;
   lightboxSrc?: string | { src: string };
+  link?: string;
+  linkTarget?: '_blank' | '_self';
 }
 
-const { src, alt, caption, credit, width = 'normal', lightbox = true, lightboxSrc } = Astro.props;
+const {
+  src,
+  alt,
+  caption,
+  credit,
+  width = 'normal',
+  lightbox = true,
+  lightboxSrc,
+  link,
+  linkTarget,
+} = Astro.props;
 const imageSrc = typeof src === 'string' ? src : src.src;
 const fullImageSrc =
   typeof lightboxSrc === 'string' ? lightboxSrc : lightboxSrc ? lightboxSrc.src : imageSrc;
@@ -18,7 +30,16 @@ const lightboxCaption = [caption, credit].filter(Boolean).join(' ');
 
 <figure class:list={['media-figure', `media-figure--${width}`]}>
   {
-    lightbox ? (
+    link ? (
+      <a
+        class="media-figure__link"
+        href={link}
+        target={linkTarget}
+        rel={linkTarget === '_blank' ? 'noopener noreferrer' : undefined}
+      >
+        <img src={imageSrc} alt={alt} loading="lazy" decoding="async" />
+      </a>
+    ) : lightbox ? (
       <a
         class="media-figure__lightbox-link"
         href={fullImageSrc}

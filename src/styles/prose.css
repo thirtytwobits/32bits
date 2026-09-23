@@ -216,6 +216,31 @@
   outline-offset: 4px;
 }
 
+.prose a.media-figure__link,
+.media-figure__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.media-figure__link img {
+  transition: border-color 160ms ease;
+}
+
+.media-figure__link:hover img {
+  border-color: var(--color-accent);
+}
+
+.media-figure__link:focus-visible {
+  outline: 0;
+}
+
+.media-figure__link:focus-visible img {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
 .media-figure figcaption,
 .media-gallery figcaption,
 .youtube-embed figcaption {

@@ -145,6 +145,10 @@ site paths:
 Figures are lightbox-enabled by default. Use `lightbox={false}` for images that
 should remain ordinary inline media.
 
+Use `link="/some/url"` to make the image a plain hyperlink instead of a
+lightbox trigger (this takes precedence over `lightbox`). Add
+`linkTarget="_blank"` to open it in a new tab.
+
 ### Comparing two images
 
 `ImageCompare` stacks two images in one frame behind a wiper the reader drags,

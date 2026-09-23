@@ -38,22 +38,7 @@ import photoPrinting4 from "../../assets/images/super-mini/photo_printing4.webp"
 import photoXzAxis0 from "../../assets/images/super-mini/photo_xz_axis0.webp";
 import photoZaxis0 from "../../assets/images/super-mini/photo_zaxis0.webp";
 
-export const galleryItems = [
-  {
-    src: diagramAssembly0,
-    alt: "An isometric CAD assembly diagram of the full redesigned printer, showing the frame, Z-axis towers, X-axis gantry, heatbed, and control panel with alignment callouts.",
-    caption: "The full assembly, modeled out before a single part gets printed.",
-  },
-  {
-    src: diagramPrinthead0,
-    alt: "A front-view technical diagram of the E3D print head assembly showing the hotend, heatsink fins, drive gears, and idler bearings.",
-    caption: "The print head assembly, an E3D hotend on Prusa's stock extruder body.",
-  },
-  {
-    src: diagramPrinthead1,
-    alt: "A front-view technical diagram of the v6 print head assembly showing the hotend, heatsink fins, drive gears, and idler bearings.",
-    caption: "The print head assembly, a PRUSA v6 print head on Prusa's stock extruder body.",
-  },
+export const renderingGallery = [
   {
     src: renderBaseplate0,
     alt: "A CAD render of a mounting plate with two red rubber grommets, an orange cable channel, and a grid of mounting holes.",
@@ -118,7 +103,10 @@ export const galleryItems = [
     src: renderZtop1,
     alt: "A CAD render of the Z-axis top bracket from another angle, showing the orange coupler seated in its mounting slot.",
     caption: "Another view of the Z-axis top bracket and coupler.",
-  },
+  }
+];
+
+export const photoGallery = [
   {
     src: photoBuddyDetail0,
     alt: "A close-up photo of the Buddy mainboard, wiring, and print head assembly mounted above an orange electronics enclosure.",
@@ -166,17 +154,53 @@ export const galleryItems = [
   },
 ];
 
+{/* 
+  +-------------------------------------------------------------------------------------------------------------------+
+  | Start of content
+  +-------------------------------------------------------------------------------------------------------------------+
+*/}
+
+So, I bought a 3D printer awhile back and the first thing I made with it was...
+
 <Figure
   src={miniMess}
   lightbox={false}
-  alt="A block diagram showing sensor input, estimation, control, actuation, and plant feedback."
-  caption="A simple control loop diagram used to verify figure layout and captions."
+  alt="A photograph of a workbench covered in tools and an half-assembled super-mini printer."
+  width="wide"
+/>
+
+...another printer.
+
+<Figure
+  src={diagramAssembly0}
+  lightbox={false}
+  alt="An isometric drawing of the super-mini 3d printer assembled."
+  caption="(Click on the image to open the CAD files)"
+  width="wide"
+  link="https://a360.co/3E7KBs3"
+  linkTarget="32bits_autodesk"
+/>
+
+The Super-Mini™ is a completely redesigned Prusa Mini. Every part of the mechanical design, other than the actuators, was reconsidered and, in my opinion, upgraded. The focus was on stability. The base weights 2kg due to tungsten inserts in the plastic ends of the y-axis and 500g of steel lab weights under the z-axis. This is designed to reduce vibration when the printer is actuating at full speed.
+
+The z-axis is made from 60x30 channel bolted to a custom-machined aluminum base that integrates with the 30x30 y-axis channels (machine work by [xometry](https://www.xometry.com/)).
+
+The print head borrows some elements from the Prusa MK3 head and the E3D Revo Hot End adapter for the Mini+ but rotates the Mini's cooling fan to allow for the third rod of the Super Mini's x-axis gantry. The additional weight of adding the third, carbon-fiber rod is made up by using hollow core rods for the first two.
+
+The build makes extensive use of carbon-fiber infused Polycarbonate (the dark gray material) along with the Prusa-standard PETG (orange). Using PC/CF for the print head and the far end of the x-axis gantry further reduces the weight of the x-axis to ensure fast retractions even with the three-rod gantry.
+
+Finally, the Prusa extruder design is replaced with an E3D Hemera with Bowden adapter.
+
+<Gallery
+  items={renderingGallery}
+  caption="CAD renders from the Super Mini project."
+  label="Super Mini project gallery"
   width="wide"
 />
 
 <Gallery
-  items={galleryItems}
-  caption="Diagrams, CAD renders, and build photos from the Super Mini project."
+  items={photoGallery}
+  caption="Build photos from the Super Mini project."
   label="Super Mini project gallery"
   width="wide"
 />
